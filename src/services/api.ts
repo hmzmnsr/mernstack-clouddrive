@@ -1,12 +1,13 @@
-import axios from 'axios';
+import axios from "axios";
 
-const API = axios.create({
-  baseURL: 'http://localhost:8001/api', // Adjust this to match your backend URL and port
+const api = axios.create({
+  baseURL: "http://localhost:8001/api",
 });
 
-API.interceptors.request.use(
+//Nice Work There
+api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -17,7 +18,12 @@ API.interceptors.request.use(
   }
 );
 
-export const getUsers = () => API.get('/users');
-export const createUser = (userData: { name: string; email: string; password: string; phone: string; }) => API.post('/users', userData);
-export const loginUser = (credentials: { email: string; password: string; }) => API.post('/users/login', credentials);
-export const getUserProfile = () => API.get('/users/profile');
+export default api;
+
+export const getUsers = () => api.get("/users");
+export const createUser = (userData: {
+  name: string;
+  email: string;
+  password: string;
+  phone: string;
+}) => api.post("/users", userData);
