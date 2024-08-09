@@ -34,15 +34,3 @@ const InputField: React.FC<InputFieldProps> = ({ type, name, id, label, pattern,
 };
 
 export default InputField;
-
-
-
-       {/* <ul className='list-none text-white font-sans text-lg flex flex-col justify-center '>
-        <li>All Files</li>
-        <li>Favorite</li>
-        <li>Recents</li>
-        <li>Shared With Me</li>
-        <li>Deleted Files</li>
-        <li>Settings</li>
-        </ul>
-        <button>Create New</button> */}

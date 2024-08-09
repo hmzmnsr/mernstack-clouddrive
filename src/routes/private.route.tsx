@@ -1,10 +1,10 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-import ControlBar from "../components/pages/dashboard/controlbar/controlbar";
+import DashBoard from "../components/pages/dashboard/dashboard";
 
 const PrivateRoutes = () => {
   return (
     <Routes>
-      <Route path="/dashboard" element={<ControlBar />} />
+      <Route path="/dashboard" element={<DashBoard />} />
       <Route path="*" element={<Navigate to="/dashboard" />} />
     </Routes>
   );

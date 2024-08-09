@@ -1,18 +1,15 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, Routes, Route} from "react-router-dom";
 import { getUserProfile } from "./redux/actions/user.action";
-import {
-  ProfileState,
-  logOut,
-  setProfile,
-  setProfileLoading,
-} from "./redux/reducers/profile.reducer";
+import { ProfileState,logOut,setProfile,setProfileLoading,} from "./redux/reducers/profile.reducer";
 import PrivateRoutes from "./routes/private.route";
 import PublicRoutes from "./routes/public.route";
+import LoginPage from "./components/pages/login/login";
 
 const App: React.FC = () => {
   const dispatch = useDispatch();
+  const Profile: ProfileState = useSelector((state: any) => state.Profile);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -33,13 +30,20 @@ const App: React.FC = () => {
     }
   }, [dispatch]);
 
-  const Profile: ProfileState = useSelector((state: any) => state.Profile);
+  if (Profile.loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <BrowserRouter>
-      {!Profile.isAuthenticated && <PublicRoutes />}
-      {Profile.isAuthenticated && <PrivateRoutes />}
-      {Profile.loading && <div>Loading...</div>}
+      <Routes>
+        <Route path="/login" element={<LoginPage />} />
+        {Profile.isAuthenticated ? (
+          <Route path="/*" element={<PrivateRoutes />} />
+        ) : (
+          <Route path="/*" element={<PublicRoutes />} />
+        )}
+      </Routes>
     </BrowserRouter>
   );
 };

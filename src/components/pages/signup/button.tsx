@@ -5,8 +5,8 @@ interface MyButtonProps {
     onClick?: () => void;
 }
 
-const MyButton: React.FC<MyButtonProps> = ({ text, onClick }) => {
-    return (
+const SignUpButton: React.FC<MyButtonProps> = ({ text, onClick }) => {
+    return(
         <button 
             type="submit"
             onClick={onClick} 
@@ -14,7 +14,9 @@ const MyButton: React.FC<MyButtonProps> = ({ text, onClick }) => {
         >
             {text}
         </button>
-    );
-};
+    )
+}
 
-export default MyButton;
+export default SignUpButton
+
+
