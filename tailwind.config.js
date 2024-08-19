@@ -13,6 +13,9 @@ module.exports = {
       colors: {
         'gradient-from': '#06b6d4',
         'gradient-to': '#3b82f6',
+         customBlue: '#212F65',
+         customBlueTwo : '#4456FF',
+         
       },
       height: {
         'custom': '130px',
@@ -23,6 +26,8 @@ module.exports = {
         'custom': '130px',
         'custom2': '80px',
         'custom3' : '50px',
+        'customborderwidth' : '330px',
+        
       },
       fontFamily: {
         'paintbrush': ['Dancing Script', 'cursive'],
@@ -62,6 +67,7 @@ module.exports = {
       }, {
         variants: ['responsive', 'hover', 'focus'],
       });
-    }
+    },
+    require('tailwind-scrollbar')({ nocompatible: true }),
   ],
 }

@@ -1,16 +1,41 @@
-import React from 'react';
-import ControlBar from './controlbar/controlbar';
-import MainArea from './mainarea/mainarea';
-import MainBox from './activity/mainbox';
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { getUserProfile } from "../../../redux/actions/user.action";
+import { setProfile } from "../../../redux/reducers/profile.reducer";
+import ControlBar from "./controlbar/controlbar";
+import MainArea from "./mainarea/mainarea";
 
 const DashBoard: React.FC = () => {
-    return (
-        <div className='grid grid-cols-12'>
-            <div className='col-span-2'><ControlBar/></div>
-            <div className='col-span-8'><MainArea/></div>
-            <div className='col-span-2 bg-gray-100'><MainBox/></div>
-        </div>
-    );
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const initializeDashboard = async () => {
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        navigate("/login");
+      } else {
+        const profileData = await getUserProfile();
+        if (profileData) {
+          dispatch(setProfile(profileData));
+        } else {
+          localStorage.removeItem("token");
+          navigate("/login");
+        }
+      }
+    };
+
+    initializeDashboard();
+  }, [dispatch, navigate]);
+
+  return (
+    <div className="grid grid-cols-12">
+      <div className="col-span-2"><ControlBar /></div>
+      <div className="col-span-10"><MainArea /></div>
+    </div>
+  );
 };
 
 export default DashBoard;

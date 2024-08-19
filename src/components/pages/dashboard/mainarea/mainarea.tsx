@@ -1,12 +1,17 @@
 import React from 'react';
-import ProfileName from './profilename';
+import TopNavigation from './topNavigation/topnavigation';
+import AllFolders from './folders/folders';
+import FilesArea from './files/allfiles';
 
 const MainArea: React.FC = () => {
+
     return (
-        <>
-        <ProfileName/>
-        </>
+        <div className='bg-gray-100 h-full'>
+            <TopNavigation/>  
+            <AllFolders/>
+            <FilesArea/>
+        </div>
     );
-}
+};
 
 export default MainArea;

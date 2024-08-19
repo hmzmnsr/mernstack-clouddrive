@@ -23,13 +23,14 @@ export const profileSlice = createSlice({
     },
     setProfile: (state, action: PayloadAction<ProfileType | null>) => {
       state.profile = action.payload;
-      state.isAuthenticated = true;
+      state.isAuthenticated = !!action.payload; // Set to true only if a profile is loaded
       state.loading = false;
     },
     logOut: (state) => {
       state.isAuthenticated = false;
       state.loading = false;
       state.profile = null;
+      localStorage.removeItem("token"); // Clear token on logout
     },
   },
 });

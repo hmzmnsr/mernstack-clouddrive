@@ -4,9 +4,9 @@ import { ProfileType } from "../../utils/types";
 export const getUserProfile = async (): Promise<ProfileType | null> => {
   try {
     const { data }: { data: ProfileType } = await api.get("/users/profile");
-
     return data;
   } catch (error) {
+    console.error("Error fetching profile", error);
     return null;
   }
 };
@@ -21,8 +21,13 @@ export const loginUser = async (credentials: {
       credentials
     );
 
-    return data.token ?? null;
+    if (data.token) {
+      localStorage.setItem("token", data.token); // Ensure token is saved
+      return data.token;
+    }
+    return null;
   } catch (error) {
+    console.error("Login failed", error);
     return null;
   }
 };

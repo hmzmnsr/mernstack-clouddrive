@@ -3,19 +3,21 @@ import Actions from "./actions";
 import ControlBarButton from "./button";
 import LogoHeading from "./logoheading";
 import StorageShow from "./storageshow";
+import LogoutButton from "./logout";
 
 const ControlBar: React.FC = () => {
 
 
 
   return (
-    <div className="min-h-screen flex flex-col justify-between bg-gradient-to-b from-cyan-500 to-blue-500 pb-10">
+    <div className="min-h-screen flex flex-col justify-between bg-customBlue pb-10">
       <div>
         <LogoHeading />
         <Actions />
         <ControlBarButton />
       </div>
       <StorageShow />
+      <LogoutButton/>
     </div>
   );
 };

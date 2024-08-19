@@ -10,7 +10,7 @@ const Actions: React.FC = () => {
     };
 
     return (
-        <div className='mt-8 text-white text-xl font-light w-full'>
+        <div className='mt-8 text-white text-lg font-light w-full'>
             <div className='flex flex-col'>
                 <div className='flex flex-row items-center py-4 px-9 cursor-pointer hover:bg-gray-200 hover:bg-opacity-50 rounded' onClick={toggleDropdown}>
                     <FontAwesomeIcon icon={faFile} className='pr-3'/>
