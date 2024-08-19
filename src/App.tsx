@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { getUserProfile } from "./redux/actions/user.action";
 import {
   ProfileState,
@@ -40,11 +40,13 @@ const App: React.FC = () => {
 
   return (
     <BrowserRouter>
-      {Profile.isAuthenticated ? (
-        <Route path="/*" element={<PrivateRoutes />} />
-      ) : (
-        <Route path="/*" element={<PublicRoutes />} />
-      )}
+      <Routes>
+        {Profile.isAuthenticated ? (
+          <Route path="/*" element={<PrivateRoutes />} />
+        ) : (
+          <Route path="/*" element={<PublicRoutes />} />
+        )}
+      </Routes>
     </BrowserRouter>
   );
 };
