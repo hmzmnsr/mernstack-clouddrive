@@ -6,7 +6,9 @@ import LoginComponents from "./logincomponents";
 const LoginPage: React.FC = () => {
   return (
     <FlexContainer className="flex flex-row flex-wrap">
-      <LoginComponents />
+      <FlexContainer className="w-1/2 flex-col px-24">
+        <LoginComponents />
+      </FlexContainer>
       <LoginIntro />
     </FlexContainer>
   );

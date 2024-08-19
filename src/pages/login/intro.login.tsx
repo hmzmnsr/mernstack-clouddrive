@@ -1,17 +1,16 @@
 import cloudimg from "../../assets/images/cloudimgg.jpg";
+import FlexContainer from "../../components/containers/flex.container";
 
 const LoginIntro = () => {
   return (
-    <div className="col-span-6 ">
-      <div className="flex flex-col justify-start items-center mt-48">
-        <div className="text-customBlue text-4xl font-semibold tracking-wide subpixel-antialiased text-center  leading-relaxed font-paintbrush">
-          Securely Upload and Store Your Important Documents With CLoudDrive!
-        </div>
-        <div className="flex justify-center items-center">
-          <img src={cloudimg} className="h-4/4 w-4/4" alt="logo" />
-        </div>
+    <FlexContainer className="w-1/2 flex-col mt-48">
+      <div className="text-customBlue text-4xl font-semibold tracking-wide subpixel-antialiased text-center  leading-relaxed font-paintbrush">
+        Securely Upload and Store Your Important Documents With CLoudDrive!
       </div>
-    </div>
+      <FlexContainer className="justify-center items-center">
+        <img src={cloudimg} className="h-4/4 w-4/4" alt="logo" />
+      </FlexContainer>
+    </FlexContainer>
   );
 };
 
