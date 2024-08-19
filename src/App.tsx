@@ -1,11 +1,15 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Route } from "react-router-dom";
 import { getUserProfile } from "./redux/actions/user.action";
-import { ProfileState, logOut, setProfile, setProfileLoading } from "./redux/reducers/profile.reducer";
+import {
+  ProfileState,
+  logOut,
+  setProfile,
+  setProfileLoading,
+} from "./redux/reducers/profile.reducer";
 import PrivateRoutes from "./routes/private.route";
 import PublicRoutes from "./routes/public.route";
-import LoginPage from "./components/pages/login/LoginPage";
 
 const App: React.FC = () => {
   const dispatch = useDispatch();
@@ -36,14 +40,11 @@ const App: React.FC = () => {
 
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/login" element={<LoginPage />} />
-        {Profile.isAuthenticated ? (
-          <Route path="/*" element={<PrivateRoutes />} />
-        ) : (
-          <Route path="/*" element={<PublicRoutes />} />
-        )}
-      </Routes>
+      {Profile.isAuthenticated ? (
+        <Route path="/*" element={<PrivateRoutes />} />
+      ) : (
+        <Route path="/*" element={<PublicRoutes />} />
+      )}
     </BrowserRouter>
   );
 };
