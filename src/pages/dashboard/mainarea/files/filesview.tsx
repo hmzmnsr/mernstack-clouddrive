@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { getAttachments } from "../../../../../services/api";
-import { FaFilePdf, FaFileImage, FaFileWord, FaFileAlt } from "react-icons/fa"; // Import some icons from react-icons
+import { FaFileAlt, FaFileImage, FaFilePdf, FaFileWord } from "react-icons/fa"; // Import some icons from react-icons
+import { getAttachments } from "../../../../services/api";
 
 // Updated Attachment interface based on schema
 interface Attachment {
@@ -54,7 +54,7 @@ const FilesViewArea: React.FC = () => {
   // Convert dateTime string to a readable format
   const formatDateTime = (dateTime: string) => {
     const date = new Date(dateTime);
-    return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+    return date.toLocaleDateString() + " " + date.toLocaleTimeString();
   };
 
   return (
@@ -62,17 +62,30 @@ const FilesViewArea: React.FC = () => {
       {attachments.map((attachment, index) => (
         <div key={index} className="grid grid-cols-12 mt-3 bg-white py-2">
           <div className="col-span-2 w-full h-full flex text-lg items-center justify-center">
-              <div className="flex flex-col justify-center text-center">
-                <div className="flex justify-center text-center">{getFileIcon(attachment.attachmentType)}</div>
-                <div className="text-lg">{attachment.attachmentName}{attachment.attachmentType}</div>
+            <div className="flex flex-col justify-center text-center">
+              <div className="flex justify-center text-center">
+                {getFileIcon(attachment.attachmentType)}
               </div>
+              <div className="text-lg">
+                {attachment.attachmentName}
+                {attachment.attachmentType}
+              </div>
+            </div>
           </div>
-          <div className="col-span-2 w-full h-full flex items-center justify-center text-lg">{formatFileSize(attachment.size)}</div>
-          <div className="col-span-2 w-full h-full flex items-center justify-center text-lg">{formatDateTime(attachment.dateTime)}</div>
-          <div className="col-span-2 w-full h-full flex items-center justify-center text-lg">{attachment.attachmentOwnership}</div>
+          <div className="col-span-2 w-full h-full flex items-center justify-center text-lg">
+            {formatFileSize(attachment.size)}
+          </div>
+          <div className="col-span-2 w-full h-full flex items-center justify-center text-lg">
+            {formatDateTime(attachment.dateTime)}
+          </div>
+          <div className="col-span-2 w-full h-full flex items-center justify-center text-lg">
+            {attachment.attachmentOwnership}
+          </div>
           {/* Replace with actual access info if available */}
-          <div className="col-span-3 w-full h-full flex items-center justify-center text-lg">Access Info Placeholder</div>
-          <div className='col=span-2'></div>
+          <div className="col-span-3 w-full h-full flex items-center justify-center text-lg">
+            Access Info Placeholder
+          </div>
+          <div className="col=span-2"></div>
         </div>
       ))}
     </div>

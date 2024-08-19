@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { getFolders, deleteFolder } from '../../../../../services/api'; 
-import { FaFolder } from 'react-icons/fa';
+import React, { useEffect, useState } from "react";
+import { FaFolder } from "react-icons/fa";
+import { deleteFolder, getFolders } from "../../../../services/api";
 
 interface Folder {
   _id: string;
@@ -11,7 +11,12 @@ const FolderView: React.FC = () => {
   const [folders, setFolders] = useState<Folder[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [contextMenu, setContextMenu] = useState<{ visible: boolean; x: number; y: number; folderId: string | null }>({
+  const [contextMenu, setContextMenu] = useState<{
+    visible: boolean;
+    x: number;
+    y: number;
+    folderId: string | null;
+  }>({
     visible: false,
     x: 0,
     y: 0,
@@ -25,8 +30,8 @@ const FolderView: React.FC = () => {
         setFolders(response.data);
         setLoading(false);
       } catch (err: any) {
-        console.error('Error fetching folders:', err);
-        setError('Failed to load folders');
+        console.error("Error fetching folders:", err);
+        setError("Failed to load folders");
         setLoading(false);
       }
     };
@@ -48,10 +53,12 @@ const FolderView: React.FC = () => {
     if (contextMenu.folderId) {
       try {
         await deleteFolder(contextMenu.folderId);
-        setFolders(folders.filter((folder) => folder._id !== contextMenu.folderId));
+        setFolders(
+          folders.filter((folder) => folder._id !== contextMenu.folderId)
+        );
       } catch (err: any) {
-        console.error('Error deleting folder:', err);
-        setError('Failed to delete folder');
+        console.error("Error deleting folder:", err);
+        setError("Failed to delete folder");
       }
     }
     setContextMenu({ visible: false, x: 0, y: 0, folderId: null });
@@ -74,7 +81,10 @@ const FolderView: React.FC = () => {
       {folders.length === 0 ? (
         <p>No folders found.</p>
       ) : (
-        <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100" style={{ maxWidth: '100%' }}>
+        <div
+          className="overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100"
+          style={{ maxWidth: "100%" }}
+        >
           <div className="flex gap-4">
             {folders.map((folder) => (
               <div
@@ -99,7 +109,10 @@ const FolderView: React.FC = () => {
           className="fixed bg-gray-200 shadow-lg rounded-md"
           style={{ top: contextMenu.y, left: contextMenu.x }}
         >
-          <li className="cursor-pointer py-3 px-10 hover:bg-gray-200" onClick={handleDelete}>
+          <li
+            className="cursor-pointer py-3 px-10 hover:bg-gray-200"
+            onClick={handleDelete}
+          >
             Delete
           </li>
         </ul>

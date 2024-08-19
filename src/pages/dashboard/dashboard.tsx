@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { getUserProfile } from "../../../redux/actions/user.action";
-import { setProfile } from "../../../redux/reducers/profile.reducer";
+import { useNavigate } from "react-router-dom";
+import { getUserProfile } from "../../redux/actions/user.action";
+import { setProfile } from "../../redux/reducers/profile.reducer";
 import ControlBar from "./controlbar/controlbar";
 import MainArea from "./mainarea/mainarea";
 
@@ -32,8 +32,12 @@ const DashBoard: React.FC = () => {
 
   return (
     <div className="grid grid-cols-12">
-      <div className="col-span-2"><ControlBar /></div>
-      <div className="col-span-10"><MainArea /></div>
+      <div className="col-span-2">
+        <ControlBar />
+      </div>
+      <div className="col-span-10">
+        <MainArea />
+      </div>
     </div>
   );
 };

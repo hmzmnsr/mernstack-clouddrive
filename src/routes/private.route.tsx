@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-import DashBoard from "../components/pages/dashboard/dashboard";
+import DashBoard from "../pages/dashboard/dashboard";
 
 const PrivateRoutes = () => {
   return (
