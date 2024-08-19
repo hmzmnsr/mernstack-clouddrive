@@ -43,41 +43,39 @@ const LoginForm: React.FC = () => {
   };
 
   return (
-    <FlexContainer className="justify-center items-center">
-      <form onSubmit={handleLogin} className="w-5/6 flex flex-col items-center">
-        <InputField
-          type="email"
-          name="email"
-          id="email"
-          label="Email address"
-          required
-          onChange={(e) => setEmail(e.target.value)}
-          value={email}
+    <form onSubmit={handleLogin} className="w-5/6 flex flex-col items-center">
+      <InputField
+        type="email"
+        name="email"
+        id="email"
+        label="Email address"
+        required
+        onChange={(e) => setEmail(e.target.value)}
+        value={email}
+      />
+      <InputField
+        type="password"
+        name="password"
+        id="password"
+        label="Password"
+        required
+        onChange={(e) => setPassword(e.target.value)}
+        value={password}
+      />
+      <FlexContainer className="items-center justify-start ml-2 mb-4">
+        <CheckBox
+          name="rememberMe"
+          id="rememberMe"
+          label="Remember me"
+          checked={rememberMe}
+          onChange={(e) => setRememberMe(e.target.checked)}
         />
-        <InputField
-          type="password"
-          name="password"
-          id="password"
-          label="Password"
-          required
-          onChange={(e) => setPassword(e.target.value)}
-          value={password}
-        />
-        <FlexContainer className="items-center justify-start ml-2 mb-4">
-          <CheckBox
-            name="rememberMe"
-            id="rememberMe"
-            label="Remember me"
-            checked={rememberMe}
-            onChange={(e) => setRememberMe(e.target.checked)}
-          />
-        </FlexContainer>
-        {error && <p className="text-red-500">{error}</p>}
-        <SubmitButton className="bg-customBlue hover:bg-red-600 mt-3">
-          Submit
-        </SubmitButton>
-      </form>
-    </FlexContainer>
+      </FlexContainer>
+      {error && <p className="text-red-500">{error}</p>}
+      <SubmitButton className="bg-customBlue hover:bg-red-600 mt-3">
+        Submit
+      </SubmitButton>
+    </form>
   );
 };
 

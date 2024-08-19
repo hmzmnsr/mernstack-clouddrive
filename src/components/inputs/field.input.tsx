@@ -22,7 +22,7 @@ const InputFields: React.FC<InputFieldProps> = ({
   onChange,
 }) => {
   return (
-    <FlexContainer className="flex-col">
+    <FlexContainer className="w-full flex-col">
       <label htmlFor={id} className="block text-sm text-customBlue mb-2">
         {label}
       </label>

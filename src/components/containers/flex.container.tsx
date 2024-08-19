@@ -7,9 +7,9 @@ interface ContainerProps {
 
 const FlexContainer: React.FC<ContainerProps> = ({
   children,
-  className = "",
+  className = "w-full",
 }) => {
-  return <div className={`w-full flex ${className}`}>{children}</div>;
+  return <div className={`flex ${className}`}>{children}</div>;
 };
 
 export default FlexContainer;

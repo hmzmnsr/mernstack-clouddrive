@@ -4,11 +4,12 @@ import { Link, useNavigate } from "react-router-dom";
 import signupimg from "../assets/images/signup-image.jpg";
 import signuplogo from "../assets/images/signuplogo.png";
 import SubmitButton from "../components/buttons/submit.button";
+import FlexContainer from "../components/containers/flex.container";
 import Container from "../components/containers/fluid.container";
 import InputField from "../components/inputs/field.input";
 import { createUser } from "../services/api";
 
-const SignUpPage: React.FC = () => {
+const SignUpPage = () => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -67,7 +68,6 @@ const SignUpPage: React.FC = () => {
   return (
     <Container className="flex flex-row flex-wrap">
       <div className="flex flex-row">
-        {/* Image div */}
         <div className="w-2/4 h-screen">
           <img
             src={signupimg}
@@ -76,7 +76,7 @@ const SignUpPage: React.FC = () => {
           />
         </div>
 
-        <Container className="h-screen flex justify-center items-center bg-gradient-to-r from-cyan-500 to-blue-500 shadow-black-500/50 flex-1">
+        <FlexContainer className="flex justify-center items-center bg-gradient-to-r from-cyan-500 to-blue-500 shadow-black-500/50 flex-1">
           <div className="h-5/6 bg-white w-5/6 flex items-center flex-col">
             <div className="h-custom w-custom">
               <img src={signuplogo} alt="logo" />
@@ -194,7 +194,7 @@ const SignUpPage: React.FC = () => {
               </h3>
             </div>
           </div>
-        </Container>
+        </FlexContainer>
       </div>
     </Container>
   );
