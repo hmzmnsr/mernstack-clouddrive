@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-import LoginPage from "../pages/login/LoginPage";
+import LoginPage from "../pages/login/login.page";
 import SignUpPage from "../pages/signup.page";
 
 const PublicRoutes = () => {
