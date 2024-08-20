@@ -10,3 +10,10 @@ export type FolderType = {
   name: string;
   path: string;
 };
+
+export type ContextMenuType = {
+  visible: boolean;
+  x: number;
+  y: number;
+  folderId: string | null;
+};

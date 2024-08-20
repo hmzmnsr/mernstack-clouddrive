@@ -28,9 +28,6 @@ export const createUser = (userData: {
   phone: string;
 }) => api.post("/users", userData);
 
-export const deleteFolder = (folderId: string) =>
-  api.delete(`/folders/${folderId}`);
-
 export const getFiles = () => api.get("/files");
 
 export const createFile = (fileData: {
