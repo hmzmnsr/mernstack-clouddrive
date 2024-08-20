@@ -29,21 +29,26 @@ const SideBar: React.FC = () => {
   };
 
   return (
-    <FlexContainer className="min-h-screen w-full flex-col  bg-customBlue pb-10">
+    <FlexContainer className="h-screen w-full flex-col bg-customBlue pb-16">
       <LogoHeading />
-      <SidebarAction icon={faHome} text="Home" className="mt-6" />
-      <SidebarAction icon={faFile} text="All Files" />
-      <SidebarAction icon={faHeart} text="Favorites" />
-      <SidebarAction icon={faCog} text="Settings" />
-      <FlexContainer className="w-full flex-row items-center">
-        <SidebarButton onClick={() => setShowPopup(true)} className="w-3/5">
-          <FontAwesomeIcon icon={faPlus} className="pr-2" />
-          Create New
-        </SidebarButton>
-        {showPopup && <CreateFolderPopup onClose={() => setShowPopup(false)} />}
+
+      <FlexContainer className="flex-1 flex-col mt-5">
+        <SidebarAction icon={faHome} text="Home" className="mt-6" />
+        <SidebarAction icon={faFile} text="All Files" />
+        <SidebarAction icon={faHeart} text="Favorites" />
+        <SidebarAction icon={faCog} text="Settings" />
+
+        <FlexContainer className="w-full flex-row items-center my-8">
+          <SidebarButton onClick={() => setShowPopup(true)} className="w-3/5">
+            <FontAwesomeIcon icon={faPlus} className="pr-2" />
+            Create Folder
+          </SidebarButton>
+          {showPopup && <CreateFolderPopup onClose={() => setShowPopup(false)} />}
+        </FlexContainer>
       </FlexContainer>
 
       <StorageShow />
+
       <SidebarButton className="w-3/5" onClick={handleLogout}>
         Logout
       </SidebarButton>

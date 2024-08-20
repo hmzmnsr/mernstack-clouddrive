@@ -3,7 +3,7 @@ import React from "react";
 const Social: React.FC = () => {
   return (
     <div className="flex flex-col items-center mt-6 w-full">
-      <button className="flex items-center justify-center w-customborderwidth py-3 mb-6 bg-red-500 text-white rounded-lg text-sm">
+      <button className="flex items-center justify-center w-customborderwidth py-3 mb-6 bg-red-500 text-white rounded-lg text-base">
         <svg
           className="w-5 h-5 mr-2"
           fill="currentColor"
@@ -15,7 +15,7 @@ const Social: React.FC = () => {
         Sign in with Google
       </button>
 
-      <button className="flex items-center justify-center w-customborderwidth py-3 bg-blue-600 text-white rounded-lg text-sm">
+      <button className="flex items-center justify-center w-customborderwidth py-3 bg-blue-600 text-white rounded-lg text-base">
         <svg
           className="w-5 h-5 mr-2"
           fill="currentColor"

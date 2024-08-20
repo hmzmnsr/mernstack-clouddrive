@@ -26,7 +26,7 @@ module.exports = {
         'custom': '130px',
         'custom2': '80px',
         'custom3' : '50px',
-        'customborderwidth' : '330px',
+        'customborderwidth' : '400px',
         
       },
       fontFamily: {

@@ -27,7 +27,7 @@ const CheckBox: React.FC<ICheckBoxProps> = ({
         checked={checked}
         onChange={(e) => onChange(e)}
       />
-      <label htmlFor={id} className={`text-sm text-customBlue ${className}`}>
+      <label htmlFor={id} className={`text-base text-customBlue ${className}`}>
         {label}
       </label>
     </FlexContainer>

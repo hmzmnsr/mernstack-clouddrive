@@ -15,7 +15,7 @@ const SubmitButton: React.FC<MyButtonProps> = ({
     <button
       type="submit"
       onClick={onClick}
-      className={`text-white focus:outline-none text-sm w-full px-36 py-3 text-center rounded-lg ${className}`}
+      className={`text-white focus:outline-none text-base w-full px-36 py-3 text-center rounded-lg ${className}`}
     >
       {children}
     </button>

@@ -6,7 +6,7 @@ const StorageSection: React.FC = () => {
   const percentageUsed = (usedStorage / totalStorage) * 100;
 
   return (
-    <div className="text-white px-5 pt-28">
+    <div className="text-white px-5 pt-28 pb-5">
       <p className="py-2 tracking-wide font-sans leading-loose">Storage:</p>
       <div className="w-full bg-white rounded-full h-3">
         <div

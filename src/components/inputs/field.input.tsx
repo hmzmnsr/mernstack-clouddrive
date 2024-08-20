@@ -23,7 +23,7 @@ const InputFields: React.FC<InputFieldProps> = ({
 }) => {
   return (
     <FlexContainer className="w-full flex-col">
-      <label htmlFor={id} className="block text-sm text-customBlue mb-2">
+      <label htmlFor={id} className="block text-base text-customBlue mb-2">
         {label}
       </label>
       <div className="relative z-0 w-full mb-4 group">

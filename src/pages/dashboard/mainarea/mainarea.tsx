@@ -6,7 +6,7 @@ import FilesArea from './files/allfiles';
 const MainArea: React.FC = () => {
 
     return (
-        <div className='bg-gray-100 h-full'>
+        <div className='bg-gray-100 w-full'>
             <TopNavigation/>  
             <AllFolders/>
             <FilesArea/>

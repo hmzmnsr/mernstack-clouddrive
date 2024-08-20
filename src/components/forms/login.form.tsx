@@ -43,7 +43,7 @@ const LoginForm: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleLogin} className="w-5/6 flex flex-col items-center">
+    <form onSubmit={handleLogin} className="w-5/12 flex flex-col items-start justify-center">
       <InputField
         type="email"
         name="email"
@@ -62,7 +62,7 @@ const LoginForm: React.FC = () => {
         onChange={(e) => setPassword(e.target.value)}
         value={password}
       />
-      <FlexContainer className="items-center justify-start ml-2 mb-4">
+      <FlexContainer className="items-start justify-start mt-1 ml-1 mb-4">
         <CheckBox
           name="rememberMe"
           id="rememberMe"
@@ -73,7 +73,7 @@ const LoginForm: React.FC = () => {
       </FlexContainer>
       {error && <p className="text-red-500">{error}</p>}
       <SubmitButton className="bg-customBlue hover:bg-red-600 mt-3">
-        Submit
+        Sign In
       </SubmitButton>
     </form>
   );
