@@ -43,7 +43,10 @@ const LoginForm: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleLogin} className="w-5/12 flex flex-col items-start justify-center">
+    <form
+      onSubmit={handleLogin}
+      className="w-5/12 flex flex-col items-start justify-center"
+    >
       <InputField
         type="email"
         name="email"

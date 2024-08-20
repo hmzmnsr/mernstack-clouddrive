@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { folderSlice } from "./folder.reducer";
 import { profileSlice } from "./profile.reducer";
 
 export const store = configureStore({
   reducer: {
     Profile: profileSlice.reducer,
+    Folder: folderSlice.reducer,
   },
 });
 

@@ -1,5 +1,10 @@
 import React, { useState } from "react";
-import { createFolder } from "../../services/api";
+import { useDispatch } from "react-redux";
+import { createFolder, getFolders } from "../../redux/actions/folder.action";
+import {
+  setFolderLoading,
+  setFolders,
+} from "../../redux/reducers/folder.reducer";
 
 interface CreateFolderPopupProps {
   onClose: () => void;
@@ -8,38 +13,32 @@ interface CreateFolderPopupProps {
 const CreateFolderPopup: React.FC<CreateFolderPopupProps> = ({ onClose }) => {
   const [folderName, setFolderName] = useState<string>("");
   const [message, setMessage] = useState<string | null>(null);
+  const dispatch = useDispatch();
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFolderName(event.target.value);
   };
 
+  const updateFolderList = async () => {
+    dispatch(setFolderLoading(true));
+    const list = await getFolders();
+    dispatch(setFolders({ list, count: list.length }));
+    dispatch(setFolderLoading(false));
+  };
+
   const handleCreateFolder = async () => {
-    try {
-      const folderPath = `/${folderName}`;
-      await createFolder({
-        path: folderPath,
-        name: folderName,
-      });
+    const folderPath = `/${folderName}`;
+    const data = await createFolder({
+      path: folderPath,
+      name: folderName,
+    });
+
+    if (data) {
+      updateFolderList();
+
       setMessage("Folder created successfully");
-      setFolderName(""); // Clear the input field after successful creation
-
-      // Delay before closing the popup
-      setTimeout(() => {
-        onClose();
-      }, 1000); // Delay in milliseconds (1 second in this case)
-    } catch (error: any) {
-      console.error("Error creating folder:", error);
-
-      if (error.response) {
-        if (error.response.status === 409) {
-          // Assuming 409 is the status code for "Conflict" (folder already exists)
-          setMessage("Folder already exists");
-        } else {
-          setMessage(`Error: ${error.response.data}`);
-        }
-      } else {
-        setMessage("Unexpected error occurred");
-      }
+      setFolderName("");
+      onClose();
     }
   };
 

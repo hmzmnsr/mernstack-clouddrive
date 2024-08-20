@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { FaFolder } from "react-icons/fa";
-import { deleteFolder, getFolders } from "../../../../services/api";
-
-interface Folder {
-  _id: string;
-  name: string;
-}
+import { useDispatch, useSelector } from "react-redux";
+import { getFolders } from "../../../../redux/actions/folder.action";
+import {
+  setFolderLoading,
+  setFolders,
+} from "../../../../redux/reducers/folder.reducer";
+import { deleteFolder } from "../../../../services/api";
+import { FolderType } from "../../../../utils/types";
 
 const FolderView: React.FC = () => {
-  const [folders, setFolders] = useState<Folder[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const dispatch = useDispatch();
   const [error, setError] = useState<string | null>(null);
   const [contextMenu, setContextMenu] = useState<{
     visible: boolean;
@@ -23,21 +24,20 @@ const FolderView: React.FC = () => {
     folderId: null,
   });
 
+  const folderState = useSelector((state: any) => state.Folder);
+
+  const { list: folders, isLoading: loading } = folderState;
+
   useEffect(() => {
     const fetchFolders = async () => {
-      try {
-        const response = await getFolders();
-        setFolders(response.data);
-        setLoading(false);
-      } catch (err: any) {
-        console.error("Error fetching folders:", err);
-        setError("Failed to load folders");
-        setLoading(false);
-      }
+      dispatch(setFolderLoading(true));
+      const list = await getFolders();
+      dispatch(setFolders({ list, count: list.length }));
+      dispatch(setFolderLoading(false));
     };
 
     fetchFolders();
-  }, []);
+  }, [dispatch]);
 
   const handleRightClick = (event: React.MouseEvent, folderId: string) => {
     event.preventDefault();
@@ -54,7 +54,9 @@ const FolderView: React.FC = () => {
       try {
         await deleteFolder(contextMenu.folderId);
         setFolders(
-          folders.filter((folder) => folder._id !== contextMenu.folderId)
+          folders.filter(
+            (folder: FolderType) => folder._id !== contextMenu.folderId
+          )
         );
       } catch (err: any) {
         console.error("Error deleting folder:", err);
@@ -86,7 +88,7 @@ const FolderView: React.FC = () => {
           style={{ maxWidth: "100%" }}
         >
           <div className="flex gap-4">
-            {folders.map((folder) => (
+            {folders.map((folder: FolderType) => (
               <div
                 key={folder._id}
                 className="flex-none w-48 flex flex-col items-center justify-center cursor-pointer p-2"

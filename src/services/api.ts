@@ -28,14 +28,8 @@ export const createUser = (userData: {
   phone: string;
 }) => api.post("/users", userData);
 
-export const getFolders = () => api.get("/folders");
-
-export const createFolder = (folderData: {
-  path: string;
-  name: string; 
-}) => api.post("/folders", folderData);
-
-export const deleteFolder = (folderId: string) => api.delete(`/folders/${folderId}`);
+export const deleteFolder = (folderId: string) =>
+  api.delete(`/folders/${folderId}`);
 
 export const getFiles = () => api.get("/files");
 
@@ -56,4 +50,5 @@ export const createAttachment = (attachmentData: {
   size: number;
 }) => api.post("/attachments", attachmentData);
 
-export const deleteAttachment = (attachmentId: string) => api.delete(`/attachments/${attachmentId}`);
+export const deleteAttachment = (attachmentId: string) =>
+  api.delete(`/attachments/${attachmentId}`);
