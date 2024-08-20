@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { createFolder } from "../../../services/api"; // Adjust the import path as needed
+import { createFolder } from "../../services/api";
 
 interface CreateFolderPopupProps {
   onClose: () => void;
