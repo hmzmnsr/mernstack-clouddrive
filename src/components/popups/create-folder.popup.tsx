@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { createFolder, getFolders } from "../../redux/actions/folder.action";
-import {
-  setFolderLoading,
-  setFolders,
-} from "../../redux/reducers/folder.reducer";
+import { setFolderLoading, setFolders } from "../../redux/reducers/folder.reducer";
 
 interface CreateFolderPopupProps {
   onClose: () => void;
@@ -27,18 +24,32 @@ const CreateFolderPopup: React.FC<CreateFolderPopupProps> = ({ onClose }) => {
   };
 
   const handleCreateFolder = async () => {
-    const folderPath = `/${folderName}`;
-    const data = await createFolder({
-      path: folderPath,
-      name: folderName,
-    });
+    if (!folderName.trim()) {
+      setMessage("Please enter a folder name.");
+      return;
+    }
 
-    if (data) {
-      updateFolderList();
+    const folderPath = `/${folderName.trim()}`; // Trim the folder name
+    try {
+      const response = await createFolder({ path: folderPath, name: folderName.trim() });
 
-      setMessage("Folder created successfully");
-      setFolderName("");
-      onClose();
+      if (response.error) {
+        // Check if the error is related to folder existence
+        if (response.error === "Folder already exists") {
+          setMessage("Folder already exists.");
+        } else {
+          setMessage(response.error);
+        }
+      } else {
+        setMessage("Folder created successfully.");
+        setTimeout(() => {
+          updateFolderList();
+          setFolderName("");
+          onClose();
+        }, 1000);
+      }
+    } catch (error) {
+      setMessage("Error creating folder. Please try again.");
     }
   };
 

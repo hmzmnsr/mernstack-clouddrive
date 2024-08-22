@@ -1,11 +1,3 @@
-import {
-  faCog,
-  faFile,
-  faHeart,
-  faHome,
-  faPlus,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -16,8 +8,22 @@ import FlexContainer from "../containers/flex.container";
 import CreateFolderPopup from "../popups/create-folder.popup";
 import SidebarAction from "./action.sidebar";
 import StorageShow from "./storage-section.sidebar";
+import {
+  faCog,
+  faFile,
+  faFolder,
+  faHeart,
+  faHome,
+  faPlus,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const SideBar: React.FC = () => {
+interface SidebarProps {
+  setSelectedSection: (section: string) => void;
+  selectedSection: string;
+}
+
+const SideBar: React.FC<SidebarProps> = ({ setSelectedSection, selectedSection }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [showPopup, setShowPopup] = useState<boolean>(false);
@@ -33,10 +39,36 @@ const SideBar: React.FC = () => {
       <LogoHeading />
 
       <FlexContainer className="flex-1 flex-col mt-5">
-        <SidebarAction icon={faHome} text="Home" className="mt-6" />
-        <SidebarAction icon={faFile} text="All Files" />
-        <SidebarAction icon={faHeart} text="Favorites" />
-        <SidebarAction icon={faCog} text="Settings" />
+        <SidebarAction
+          icon={faHome}
+          text="Home"
+          isActive={selectedSection === "Home"}
+          onClick={() => setSelectedSection("Home")}
+        />
+        <SidebarAction
+          icon={faFolder}
+          text="All Folders"
+          isActive={selectedSection === "All Folders"}
+          onClick={() => setSelectedSection("All Folders")}
+        />
+        <SidebarAction
+          icon={faFile}
+          text="All Files"
+          isActive={selectedSection === "All Files"}
+          onClick={() => setSelectedSection("All Files")}
+        />
+        <SidebarAction
+          icon={faHeart}
+          text="Favorites"
+          isActive={selectedSection === "Favorites"}
+          onClick={() => setSelectedSection("Favorites")}
+        />
+        <SidebarAction
+          icon={faCog}
+          text="Settings"
+          isActive={selectedSection === "Settings"}
+          onClick={() => setSelectedSection("Settings")}
+        />
 
         <FlexContainer className="w-full flex-row items-center my-8">
           <SidebarButton onClick={() => setShowPopup(true)} className="w-3/5">
@@ -45,13 +77,13 @@ const SideBar: React.FC = () => {
           </SidebarButton>
           {showPopup && <CreateFolderPopup onClose={() => setShowPopup(false)} />}
         </FlexContainer>
+
+        <StorageShow />
+
+        <SidebarButton className="w-3/5" onClick={handleLogout}>
+          Logout
+        </SidebarButton>
       </FlexContainer>
-
-      <StorageShow />
-
-      <SidebarButton className="w-3/5" onClick={handleLogout}>
-        Logout
-      </SidebarButton>
     </FlexContainer>
   );
 };

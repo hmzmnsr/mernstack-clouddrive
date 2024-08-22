@@ -21,7 +21,7 @@ const SignUpPage: React.FC = () => {
                     </h3>
                 </div>
                 <SignUpForm />
-                <div className="font-mono font-light text-base pb-5 pt-8">
+                <div className="text-base pb-5 pt-8">
                     <h3 className="text-customBlue">
                         Have an account?{" "}
                         <Link to="/login" className="text-customBlueTwo hover:text-red-500">
