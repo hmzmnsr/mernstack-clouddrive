@@ -71,7 +71,7 @@ const SideBar: React.FC<SidebarProps> = ({ setSelectedSection, selectedSection }
         />
 
         <FlexContainer className="w-full flex-row items-center my-8">
-          <SidebarButton onClick={() => setShowPopup(true)} className="w-3/5">
+          <SidebarButton onClick={() => setShowPopup(true)} className="w-3/5 py-3">
             <FontAwesomeIcon icon={faPlus} className="pr-2" />
             Create Folder
           </SidebarButton>
@@ -80,7 +80,7 @@ const SideBar: React.FC<SidebarProps> = ({ setSelectedSection, selectedSection }
 
         <StorageShow />
 
-        <SidebarButton className="w-3/5" onClick={handleLogout}>
+        <SidebarButton className="w-3/5 py-3" onClick={handleLogout}>
           Logout
         </SidebarButton>
       </FlexContainer>

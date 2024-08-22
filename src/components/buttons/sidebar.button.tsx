@@ -14,7 +14,7 @@ const SidebarButton: React.FC<ISidebarButtonProps> = ({
   return (
     <button
       onClick={onClick}
-      className={`mx-auto bg-customBlueTwo text-white py-3 rounded-xl hover:bg-red-700 ${className}`}
+      className={`mx-auto bg-customBlueTwo text-white rounded-xl hover:bg-red-700 ${className}`}
     >
       {children}
     </button>

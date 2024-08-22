@@ -54,7 +54,7 @@ const CreateFolderPopup: React.FC<CreateFolderPopupProps> = ({ onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
       <div className="bg-white h-2/6 w-2/4 py-10 px-20 rounded-lg shadow-lg">
         <div className="flex flex-col items-start justify-start">
           <h2 className="text-2xl mb-4">Create Folder</h2>
