@@ -2,21 +2,27 @@ import React, { useState } from "react";
 
 interface CreateFilePopupProps {
   onClose: () => void;
-  onCreate: (fileName: string, ownership: string) => void;
+  onCreate: (fileName: string, file: File | null) => void;
 }
 
 const CreateFilePopup: React.FC<CreateFilePopupProps> = ({ onClose, onCreate }) => {
   const [fileName, setFileName] = useState<string>("");
-  const [ownership, setOwnership] = useState<string>("Public");
+  const [file, setFile] = useState<File | null>(null);
 
   const handleCreate = () => {
-    onCreate(fileName, ownership);
+    onCreate(fileName, file);
     onClose();
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setFile(e.target.files[0]);
+    }
   };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white h-2/6 w-2/4 py-10 px-20 rounded-lg shadow-lgg">
+      <div className="bg-white h-3/6 w-2/4 py-10 px-20 rounded-lg shadow-lg">
         <h2 className="text-xl font-bold mb-4">Create New File</h2>
         <div className="mb-4">
           <label className="block text-gray-700">File Name</label>
@@ -28,15 +34,12 @@ const CreateFilePopup: React.FC<CreateFilePopupProps> = ({ onClose, onCreate }) 
           />
         </div>
         <div className="mb-4">
-          <label className="block text-gray-700">Ownership</label>
-          <select
-            value={ownership}
-            onChange={(e) => setOwnership(e.target.value)}
+          <label className="block text-gray-700">Upload Attachment</label>
+          <input
+            type="file"
+            onChange={handleFileChange}
             className="w-full px-3 py-2 border border-gray-300 rounded-md"
-          >
-            <option value="Public">Public</option>
-            <option value="Private">Private</option>
-          </select>
+          />
         </div>
         <div className="flex justify-end">
           <button

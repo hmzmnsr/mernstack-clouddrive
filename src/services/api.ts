@@ -28,6 +28,9 @@ export const createUser = (userData: {
   phone: string;
 }) => api.post("/users", userData);
 
+export const loginUser = (credentials: { email: string; password: string }) =>
+  api.post("/users/login", credentials);
+
 export const getFiles = () => api.get("/files");
 
 export const createFile = (fileData: {
@@ -49,3 +52,10 @@ export const createAttachment = (attachmentData: {
 
 export const deleteAttachment = (attachmentId: string) =>
   api.delete(`/attachments/${attachmentId}`);
+
+// New methods for handling favorite files
+export const addFavoriteFile = (fileId: string) =>
+  api.post("/users/favorites", { fileId });
+
+export const removeFavoriteFile = (fileId: string) =>
+  api.delete("/users/favorites", { data: { fileId } });

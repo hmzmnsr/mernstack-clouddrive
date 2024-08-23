@@ -8,7 +8,7 @@ interface Attachment {
   attachmentType: string;
   size: number;
   dateTime: string;
-  attachmentOwnership: string;
+
 }
 
 const FilesViewArea: React.FC = () => {
@@ -75,7 +75,7 @@ const FilesViewArea: React.FC = () => {
             {formatDateTime(attachment.dateTime)}
           </div>
           <div className="col-span-2 w-full h-full flex items-center justify-center text-lg">
-            {attachment.attachmentOwnership}
+            folder name
           </div>
           <div className="col-span-3 w-full h-full flex items-center justify-center text-lg">
             Access Info Placeholder

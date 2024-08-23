@@ -28,7 +28,7 @@ const AllFolders: React.FC = () => {
 
   return (
     <FlexContainer className="flex-col p-4">
-      <div className="text-lg font-bold tracking-wide font-sans leading-loose">
+      <div className="pb-2 pl-3 text-lg font-bold tracking-wide font-sans leading-loose">
         All Folders
       </div>
       {loading ? (
@@ -36,7 +36,7 @@ const AllFolders: React.FC = () => {
       ) : folders.length === 0 ? (
         <div>No folders found. Please create a folder.</div>
       ) : (
-        <FlexContainer className="px-4 w-full flex-wrap">
+        <FlexContainer className="pl-1 w-full flex-wrap">
           {folders.map((folder: FolderType) => (
             <FolderItem key={folder._id} folder={folder} />
           ))}
