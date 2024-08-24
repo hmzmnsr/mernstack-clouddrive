@@ -1,6 +1,7 @@
 import React from "react";
 import FlexContainer from "../../../components/containers/flex.container";
-import { FaFileAlt, FaFileImage, FaFilePdf, FaFileWord } from "react-icons/fa";
+import { FaFileAlt, FaFileImage, FaFilePdf, FaFileWord, FaDownload } from "react-icons/fa";
+import { MdFileDownload } from "react-icons/md";
 
 interface Attachment {
   attachmentName: string;
@@ -31,6 +32,11 @@ const FavFiles: React.FC<FavFilesProps> = ({ attachments }) => {
     }
   };
 
+  const downloadFile = (attachment: Attachment) => {
+    // Mock download function
+    alert(`Downloading ${attachment.attachmentName}`);
+  };
+
   return (
     <FlexContainer className="flex-col p-4">
       <div className="text-lg font-bold tracking-wide font-sans leading-loose col-span-10 pl-3 pb-3">
@@ -43,6 +49,14 @@ const FavFiles: React.FC<FavFilesProps> = ({ attachments }) => {
           {favoriteFiles.map((attachment, index) => (
             <div key={index} className="w-full md:w-1/2 lg:w-1/3 p-2">
               <div className="bg-white p-4 rounded-lg shadow-md">
+                <div className="flex justify-end items-center mb-2">
+                  <button
+                    onClick={() => downloadFile(attachment)}
+                    className="text-yellow-500"
+                  >
+                    <FaDownload size={18} />
+                  </button>
+                </div>
                 <div className="flex items-center mb-2">
                   <div className="mr-4">{getFileIcon(attachment.attachmentType)}</div>
                   <div className="text-lg font-semibold">{attachment.attachmentName}</div>

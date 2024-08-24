@@ -4,6 +4,7 @@ import SidebarButton from "../../../components/buttons/sidebar.button";
 import CreateFilePopup from "../../../components/popups/create-file-popup";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { MdFileDownload } from "react-icons/md";
 
 interface Attachment {
   attachmentName: string;
@@ -43,6 +44,11 @@ const AllFiles: React.FC<AllFilesProps> = ({ attachments, setAttachments }) => {
           : attachment
       )
     );
+  };
+
+  const downloadFile = (attachment: Attachment) => {
+    // Mock download function
+    alert(`Downloading ${attachment.attachmentName}`);
   };
 
   const formatFileSize = (size: number) => {
@@ -88,17 +94,25 @@ const AllFiles: React.FC<AllFilesProps> = ({ attachments, setAttachments }) => {
         <div className="flex flex-wrap -mx-2">
           {attachments.map((attachment, index) => (
             <div key={index} className="w-full sm:w-1/2 lg:w-1/3 p-2">
-              <div className="bg-white p-4 rounded-lg shadow-md relative">
-                <button
-                  onClick={() => toggleFavorite(index)}
-                  className="absolute top-2 right-2 text-yellow-500"
-                >
-                  {attachment.isFavorite ? (
-                    <FaStar size={20} />
-                  ) : (
-                    <FaRegStar size={20} />
-                  )}
-                </button>
+              <div className="bg-white p-4 rounded-lg shadow-md">
+                <div className="flex items-center justify-end mb-2">
+                  <button
+                    onClick={() => downloadFile(attachment)}
+                    className="text-yellow-500 pt-1"
+                  >
+                    <MdFileDownload size={24} />
+                  </button>
+                  <button
+                    onClick={() => toggleFavorite(index)}
+                    className="text-yellow-500"
+                  >
+                    {attachment.isFavorite ? (
+                      <FaStar size={18}/>
+                    ) : (
+                      <FaRegStar size={18}/>
+                    )}
+                  </button>
+                </div>
                 <div className="flex items-center mb-2">
                   <div className="mr-4">{getFileIcon(attachment.attachmentType)}</div>
                   <div className="text-lg font-semibold">
@@ -108,6 +122,7 @@ const AllFiles: React.FC<AllFilesProps> = ({ attachments, setAttachments }) => {
                 <div className="text-sm text-gray-600">
                   <div>Size: {formatFileSize(attachment.size)}</div>
                   <div>Date: {formatDateTime(attachment.dateTime)}</div>
+                  <div>Folder Name: Reports</div>
                 </div>
               </div>
             </div>

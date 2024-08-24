@@ -22,7 +22,7 @@ const CreateFilePopup: React.FC<CreateFilePopupProps> = ({ onClose, onCreate }) 
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white h-3/6 w-2/4 py-10 px-20 rounded-lg shadow-lg">
+      <div className="bg-white h-7/12 w-2/4 py-10 px-20 rounded-lg shadow-lg">
         <h2 className="text-xl font-bold mb-4">Create New File</h2>
         <div className="mb-4">
           <label className="block text-gray-700">File Name</label>
@@ -30,27 +30,27 @@ const CreateFilePopup: React.FC<CreateFilePopupProps> = ({ onClose, onCreate }) 
             type="text"
             value={fileName}
             onChange={(e) => setFileName(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md"
+            className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md"
           />
         </div>
-        <div className="mb-4">
+        <div className="mb-5 mt-2">
           <label className="block text-gray-700">Upload Attachment</label>
           <input
             type="file"
             onChange={handleFileChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md"
+            className="w-full py-1 border-none mt-1"
           />
         </div>
         <div className="flex justify-end">
           <button
             onClick={onClose}
-            className="mr-4 px-4 py-2 text-gray-700 bg-gray-200 rounded-md"
+            className="mr-4 py-2 px-8 text-gray-700 bg-gray-200 rounded"
           >
             Cancel
           </button>
           <button
             onClick={handleCreate}
-            className="px-4 py-2 text-white bg-blue-600 rounded-md"
+            className="bg-customBlueTwo text-white py-2 px-8 rounded"
           >
             Create
           </button>
