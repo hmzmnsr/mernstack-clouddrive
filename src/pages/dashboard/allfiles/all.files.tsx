@@ -95,10 +95,14 @@ const AllFiles: React.FC<AllFilesProps> = ({ attachments, setAttachments }) => {
           {attachments.map((attachment, index) => (
             <div key={index} className="w-full sm:w-1/2 lg:w-1/3 p-2">
               <div className="bg-white p-4 rounded-lg shadow-md">
-                <div className="flex items-center justify-end mb-2">
+                <div className="flex items-center mb-2">
+                  <div className="mr-4">{getFileIcon(attachment.attachmentType)}</div>
+                  <div className="flex-1 text-lg font-semibold">
+                    {attachment.attachmentName}
+                  </div>
                   <button
                     onClick={() => downloadFile(attachment)}
-                    className="text-yellow-500 pt-1"
+                    className="text-yellow-500 mt-1"
                   >
                     <MdFileDownload size={24} />
                   </button>
@@ -107,17 +111,11 @@ const AllFiles: React.FC<AllFilesProps> = ({ attachments, setAttachments }) => {
                     className="text-yellow-500"
                   >
                     {attachment.isFavorite ? (
-                      <FaStar size={18}/>
+                      <FaStar size={18} />
                     ) : (
-                      <FaRegStar size={18}/>
+                      <FaRegStar size={18} />
                     )}
                   </button>
-                </div>
-                <div className="flex items-center mb-2">
-                  <div className="mr-4">{getFileIcon(attachment.attachmentType)}</div>
-                  <div className="text-lg font-semibold">
-                    {attachment.attachmentName}
-                  </div>
                 </div>
                 <div className="text-sm text-gray-600">
                   <div>Size: {formatFileSize(attachment.size)}</div>
