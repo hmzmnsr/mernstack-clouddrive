@@ -3,20 +3,21 @@ import FlexContainer from "../../../components/containers/flex.container";
 import { FaFileAlt, FaFileImage, FaFilePdf, FaFileWord } from "react-icons/fa";
 import { MdFileDownload } from "react-icons/md";
 
-interface Attachment {
+interface FileData {
   attachmentName: string;
   attachmentType: string;
   size: number;
   dateTime: string;
   isFavorite: boolean;
+  folderName: string;
 }
 
 interface FavFilesProps {
-  attachments: Attachment[];
+  files: FileData[];
 }
 
-const FavFiles: React.FC<FavFilesProps> = ({ attachments }) => {
-  const favoriteFiles = attachments.filter((attachment) => attachment.isFavorite);
+const FavFiles: React.FC<FavFilesProps> = ({ files }) => {
+  const favoriteFiles = files.filter((file) => file.isFavorite);
 
   const getFileIcon = (type: string) => {
     switch (type) {
@@ -32,9 +33,9 @@ const FavFiles: React.FC<FavFilesProps> = ({ attachments }) => {
     }
   };
 
-  const downloadFile = (attachment: Attachment) => {
+  const downloadFile = (file: FileData) => {
     // Mock download function
-    alert(`Downloading ${attachment.attachmentName}`);
+    alert(`Downloading ${file.attachmentName}`);
   };
 
   return (
@@ -46,22 +47,25 @@ const FavFiles: React.FC<FavFilesProps> = ({ attachments }) => {
         <div>No favorite files found.</div>
       ) : (
         <FlexContainer className="pl-1 w-full flex-wrap z-10">
-          {favoriteFiles.map((attachment, index) => (
+          {favoriteFiles.map((file, index) => (
             <div key={index} className="w-full md:w-1/2 lg:w-1/3 p-2">
               <div className="bg-white p-4 rounded-lg shadow-md">
                 <div className="flex items-center mb-2">
-                  <div className="mr-4">{getFileIcon(attachment.attachmentType)}</div>
-                  <div className="flex-1 text-lg font-semibold">{attachment.attachmentName}</div>
+                  <div className="mr-4">{getFileIcon(file.attachmentType)}</div>
+                  <div className="flex-1 text-lg font-semibold">
+                    {file.attachmentName}
+                  </div>
                   <button
-                    onClick={() => downloadFile(attachment)}
-                    className="text-yellow-500"
+                    onClick={() => downloadFile(file)}
+                    className="text-yellow-500 mt-1"
                   >
                     <MdFileDownload size={24} />
                   </button>
                 </div>
                 <div className="text-sm text-gray-600">
-                  <div>Size: {formatFileSize(attachment.size)}</div>
-                  <div>Date: {formatDateTime(attachment.dateTime)}</div>
+                  <div>Size: {file.size} MB</div>
+                  <div>Date: {file.dateTime}</div>
+                  <div>Folder Name: {file.folderName}</div>
                 </div>
               </div>
             </div>
@@ -70,17 +74,6 @@ const FavFiles: React.FC<FavFilesProps> = ({ attachments }) => {
       )}
     </FlexContainer>
   );
-};
-
-const formatFileSize = (size: number) => {
-  if (size < 1024) return `${size} B`;
-  if (size < 1024 * 1024) return `${(size / 1024).toFixed(2)} KB`;
-  return `${(size / (1024 * 1024)).toFixed(2)} MB`;
-};
-
-const formatDateTime = (dateTime: string) => {
-  const date = new Date(dateTime);
-  return date.toLocaleDateString() + " " + date.toLocaleTimeString();
 };
 
 export default FavFiles;

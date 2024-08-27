@@ -1,33 +1,37 @@
 import React, { useEffect, useState } from "react";
 import { FaFileAlt, FaFileImage, FaFilePdf, FaFileWord } from "react-icons/fa";
-import { getAttachments } from "../../../../services/api";
+import { getFiles } from "../../../../services/api"; // Assuming similar API call
 import "./filescustom.css";
 
-interface Attachment {
+interface FileData {
   attachmentName: string;
   attachmentType: string;
   size: number;
   dateTime: string;
-
+  folderName: string;
 }
 
-const FilesViewArea: React.FC = () => {
-  const [attachments, setAttachments] = useState<Attachment[]>([]);
+const RecentFilesView: React.FC = () => {
+  const [recentFiles, setRecentFiles] = useState<FileData[]>([]);
 
   useEffect(() => {
-    const fetchAttachments = async () => {
+    const fetchRecentFiles = async () => {
       try {
-        const response = await getAttachments();
-        // Reverse the list and take the top 10 most recent files
-        const recentAttachments = response.data.reverse().slice(0, 10);
-        setAttachments(recentAttachments);
+        const filesData = await getFiles();
+        setRecentFiles(filesData.reverse().slice(0, 10)); // Fetch and reverse the files
       } catch (error) {
-        console.error("Error fetching attachments:", error);
+        console.error("Error fetching recent files:", error);
       }
     };
 
-    fetchAttachments();
+    fetchRecentFiles();
   }, []);
+
+  const formatFileSize = (size: number) => {
+    if (size < 1024) return `${size} B`;
+    if (size < 1024 * 1024) return `${(size / 1024).toFixed(2)} KB`;
+    return `${(size / (1024 * 1024)).toFixed(2)} MB`;
+  };
 
   const getFileIcon = (type: string) => {
     switch (type) {
@@ -43,48 +47,34 @@ const FilesViewArea: React.FC = () => {
     }
   };
 
-  const formatFileSize = (size: number) => {
-    if (size < 1024) return `${size} B`;
-    if (size < 1024 * 1024) return `${(size / 1024).toFixed(2)} KB`;
-    return `${(size / (1024 * 1024)).toFixed(2)} MB`;
-  };
-
-  const formatDateTime = (dateTime: string) => {
-    const date = new Date(dateTime);
-    return date.toLocaleDateString() + " " + date.toLocaleTimeString();
-  };
-
   return (
-    <div className="h-72 overflow-auto custom-scrollbar"> {/* Added custom-scrollbar class */}
-      {attachments.map((attachment, index) => (
-        <div key={index} className="grid grid-cols-12  bg-white py-2">
-          <div className="col-span-2 w-full h-full flex text-lg items-center justify-center">
-            <div className="flex flex-col justify-center text-center">
-              <div className="flex justify-center text-center">
-                {getFileIcon(attachment.attachmentType)}
-              </div>
-              <div className="text-lg">
-                {attachment.attachmentName}
-              </div>
+    <div className="h-72 overflow-auto custom-scrollbar">
+      {recentFiles.map((file, index) => (
+        <div key={index} className="grid grid-cols-12 bg-white py-2">
+          <div className="col-span-2 w-full h-full flex flex-col text-lg items-center justify-center">
+            <div className="flex justify-center text-center mb-1">
+              {getFileIcon(file.attachmentType)}
+            </div>
+            <div className="text-lg text-center">
+              {file.attachmentName} {/* Ensuring attachmentName is displayed */}
             </div>
           </div>
           <div className="col-span-2 w-full h-full flex items-center justify-center text-lg">
-            {formatFileSize(attachment.size)}
+            {formatFileSize(file.size)} {/* Example size formatting */}
           </div>
           <div className="col-span-3 w-full h-full flex items-center justify-center text-lg">
-            {formatDateTime(attachment.dateTime)}
+            {new Date(file.dateTime).toLocaleDateString()} {/* Example date formatting */}
           </div>
           <div className="col-span-2 w-full h-full flex items-center justify-center text-lg">
-            folder name
+            {file.folderName} {/* Display folder name */}
           </div>
           <div className="col-span-3 w-full h-full flex items-center justify-center text-lg">
-            Access Info Placeholder
+            Access Info Placeholder {/* Placeholder for access info */}
           </div>
-        
         </div>
       ))}
     </div>
   );
 };
 
-export default FilesViewArea;
+export default RecentFilesView;

@@ -31,7 +31,20 @@ export const createUser = (userData: {
 export const loginUser = (credentials: { email: string; password: string }) =>
   api.post("/users/login", credentials);
 
-export const getFiles = () => api.get("/files");
+export const getFiles = () =>
+  api.get("/files").then((response) => {
+    return response.data.map((file: any) => {
+      const attachmentRef = file.attachmentRef || {}; // Default to an empty object if null
+      return {
+        attachmentName: attachmentRef.attachmentName || "Unknown File",
+        attachmentType: attachmentRef.attachmentType || "unknown",
+        size: attachmentRef.size || 0,
+        dateTime: attachmentRef.dateTime || new Date().toISOString(),
+        folderName: file.folderRef?.name || "Unknown Folder",
+        isFavorite: file.isFavorite || false,
+      };
+    });  
+  });
 
 export const createFile = (fileData: {
   attachmentRef: string;
@@ -39,19 +52,6 @@ export const createFile = (fileData: {
 }) => api.post("/files", fileData);
 
 export const deleteFile = (fileId: string) => api.delete(`/files/${fileId}`);
-
-export const getAttachments = () => api.get("/attachments");
-
-export const createAttachment = (attachmentData: {
-  attachmentPath: string;
-  attachmentName: string;
-  attachmentType: string;
-  attachmentOwnership: string;
-  size: number;
-}) => api.post("/attachments", attachmentData);
-
-export const deleteAttachment = (attachmentId: string) =>
-  api.delete(`/attachments/${attachmentId}`);
 
 // New methods for handling favorite files
 export const addFavoriteFile = (fileId: string) =>

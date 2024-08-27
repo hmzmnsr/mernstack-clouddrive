@@ -1,25 +1,33 @@
 import React, { useState } from "react";
-import { FaFileAlt, FaFileImage, FaFilePdf, FaFileWord, FaRegStar, FaStar } from "react-icons/fa";
+import {
+  FaFileAlt,
+  FaFileImage,
+  FaFilePdf,
+  FaFileWord,
+  FaRegStar,
+  FaStar,
+} from "react-icons/fa";
 import SidebarButton from "../../../components/buttons/sidebar.button";
 import CreateFilePopup from "../../../components/popups/create-file-popup";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { MdFileDownload } from "react-icons/md";
 
-interface Attachment {
+interface FileData {
   attachmentName: string;
   attachmentType: string;
   size: number;
   dateTime: string;
   isFavorite: boolean;
+  folderName: string;
 }
 
 interface AllFilesProps {
-  attachments: Attachment[];
-  setAttachments: React.Dispatch<React.SetStateAction<Attachment[]>>;
+  files: FileData[];
+  setFiles: React.Dispatch<React.SetStateAction<FileData[]>>;
 }
 
-const AllFiles: React.FC<AllFilesProps> = ({ attachments, setAttachments }) => {
+const AllFiles: React.FC<AllFilesProps> = ({ files, setFiles }) => {
   const [showPopup, setShowPopup] = useState(false);
 
   const getFileIcon = (type: string) => {
@@ -37,18 +45,18 @@ const AllFiles: React.FC<AllFilesProps> = ({ attachments, setAttachments }) => {
   };
 
   const toggleFavorite = (index: number) => {
-    setAttachments((prevAttachments) =>
-      prevAttachments.map((attachment, i) =>
+    setFiles((prevFiles) =>
+      prevFiles.map((file, i) =>
         i === index
-          ? { ...attachment, isFavorite: !attachment.isFavorite }
-          : attachment
+          ? { ...file, isFavorite: !file.isFavorite }
+          : file
       )
     );
   };
 
-  const downloadFile = (attachment: Attachment) => {
+  const downloadFile = (file: FileData) => {
     // Mock download function
-    alert(`Downloading ${attachment.attachmentName}`);
+    alert(`Downloading ${file.attachmentName}`);
   };
 
   const formatFileSize = (size: number) => {
@@ -62,16 +70,17 @@ const AllFiles: React.FC<AllFilesProps> = ({ attachments, setAttachments }) => {
     return date.toLocaleDateString() + " " + date.toLocaleTimeString();
   };
 
-  const handleCreateAttachment = (fileName: string, file: File | null) => {
-    const newAttachment: Attachment = {
+  const handleCreateFile = (fileName: string, file: File | null) => {
+    const newFile: FileData = {
       attachmentName: fileName,
       attachmentType: file ? file.type.split("/")[1] : "doc",
       size: file ? file.size : 0,
       dateTime: new Date().toISOString(),
       isFavorite: false,
+      folderName: "New Folder", // Default folder name
     };
 
-    setAttachments((prev) => [...prev, newAttachment]);
+    setFiles((prev) => [...prev, newFile]);
   };
 
   return (
@@ -88,20 +97,20 @@ const AllFiles: React.FC<AllFilesProps> = ({ attachments, setAttachments }) => {
           Create File
         </SidebarButton>
       </div>
-      {attachments.length === 0 ? (
+      {files.length === 0 ? (
         <div>No files found.</div>
       ) : (
         <div className="flex flex-wrap -mx-2">
-          {attachments.map((attachment, index) => (
+          {files.map((file, index) => (
             <div key={index} className="w-full sm:w-1/2 lg:w-1/3 p-2">
               <div className="bg-white p-4 rounded-lg shadow-md">
                 <div className="flex items-center mb-2">
-                  <div className="mr-4">{getFileIcon(attachment.attachmentType)}</div>
+                  <div className="mr-4">{getFileIcon(file.attachmentType)}</div>
                   <div className="flex-1 text-lg font-semibold">
-                    {attachment.attachmentName}
+                    {file.attachmentName}
                   </div>
                   <button
-                    onClick={() => downloadFile(attachment)}
+                    onClick={() => downloadFile(file)}
                     className="text-yellow-500 mt-1"
                   >
                     <MdFileDownload size={24} />
@@ -110,7 +119,7 @@ const AllFiles: React.FC<AllFilesProps> = ({ attachments, setAttachments }) => {
                     onClick={() => toggleFavorite(index)}
                     className="text-yellow-500"
                   >
-                    {attachment.isFavorite ? (
+                    {file.isFavorite ? (
                       <FaStar size={18} />
                     ) : (
                       <FaRegStar size={18} />
@@ -118,9 +127,9 @@ const AllFiles: React.FC<AllFilesProps> = ({ attachments, setAttachments }) => {
                   </button>
                 </div>
                 <div className="text-sm text-gray-600">
-                  <div>Size: {formatFileSize(attachment.size)}</div>
-                  <div>Date: {formatDateTime(attachment.dateTime)}</div>
-                  <div>Folder Name: Reports</div>
+                  <div>Size: {formatFileSize(file.size)}</div>
+                  <div>Date: {formatDateTime(file.dateTime)}</div>
+                  <div>Folder Name: {file.folderName}</div>
                 </div>
               </div>
             </div>
@@ -131,7 +140,7 @@ const AllFiles: React.FC<AllFilesProps> = ({ attachments, setAttachments }) => {
       {showPopup && (
         <CreateFilePopup
           onClose={() => setShowPopup(false)}
-          onCreate={handleCreateAttachment}
+          onCreate={handleCreateFile}
         />
       )}
     </div>

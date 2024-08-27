@@ -1,16 +1,34 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getFolders } from "../../redux/actions/folder.action";
+import { setFolderLoading, setFolders } from "../../redux/reducers/folder.reducer";
+import { FolderType } from "../../utils/types";
 
 interface CreateFilePopupProps {
   onClose: () => void;
-  onCreate: (fileName: string, file: File | null) => void;
+  onCreate: (fileName: string, file: File | null, folderId: string) => void;
 }
 
 const CreateFilePopup: React.FC<CreateFilePopupProps> = ({ onClose, onCreate }) => {
+  const dispatch = useDispatch();
+  const { list: folders, isLoading: loading } = useSelector((state: any) => state.Folder);
   const [fileName, setFileName] = useState<string>("");
   const [file, setFile] = useState<File | null>(null);
+  const [selectedFolder, setSelectedFolder] = useState<string>("");
+
+  useEffect(() => {
+    const fetchFolders = async () => {
+      dispatch(setFolderLoading(true));
+      const list = await getFolders();
+      dispatch(setFolders({ list, count: list.length }));
+      dispatch(setFolderLoading(false));
+    };
+
+    fetchFolders();
+  }, [dispatch]);
 
   const handleCreate = () => {
-    onCreate(fileName, file);
+    onCreate(fileName, file, selectedFolder);
     onClose();
   };
 
@@ -32,6 +50,22 @@ const CreateFilePopup: React.FC<CreateFilePopupProps> = ({ onClose, onCreate }) 
             onChange={(e) => setFileName(e.target.value)}
             className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md"
           />
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-700">Select Folder</label>
+          <select
+            value={selectedFolder}
+            onChange={(e) => setSelectedFolder(e.target.value)}
+            className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md"
+            disabled={loading}
+          >
+            <option value="" disabled>Select a folder</option>
+            {folders.map((folder: FolderType) => (
+              <option key={folder._id} value={folder._id}>
+                {folder.name}
+              </option>
+            ))}
+          </select>
         </div>
         <div className="mb-5 mt-2">
           <label className="block text-gray-700">Upload Attachment</label>

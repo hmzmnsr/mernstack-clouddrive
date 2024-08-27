@@ -17,3 +17,14 @@ export type ContextMenuType = {
   y: number;
   folderId: string | null;
 };
+
+
+// src/types/Attachment.ts
+export interface Attachment {
+  attachmentName: string;
+  attachmentType: string;
+  size: number;
+  dateTime: string;
+  isFavorite: boolean;
+  folder: string; // Add this if it’s part of your data
+}

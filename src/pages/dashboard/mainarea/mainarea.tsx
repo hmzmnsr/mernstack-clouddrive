@@ -4,15 +4,16 @@ import RecentFolders from "./recentfolders/recent.folders";
 import AllFolders from "../allfolders/all.folders";
 import AllFiles from "../allfiles/all.files";
 import RecentFiles from "./recentfiles/recent.files";
-import FavFiles from "../favfiles/fav.files"; // Import the FavFiles component
-import { getAttachments } from "../../../services/api";
+import FavFiles from "../favfiles/fav.files";
+import { getFiles } from "../../../services/api";
 
-interface Attachment {
+interface FileData {
   attachmentName: string;
   attachmentType: string;
   size: number;
   dateTime: string;
   isFavorite: boolean;
+  folderName: string;
 }
 
 interface MainAreaProps {
@@ -20,26 +21,22 @@ interface MainAreaProps {
 }
 
 const MainArea: React.FC<MainAreaProps> = ({ selectedSection }) => {
-  const [attachments, setAttachments] = useState<Attachment[]>([]);
+  const [files, setFiles] = useState<FileData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    const fetchAttachments = async () => {
+    const fetchFiles = async () => {
       try {
-        const response = await getAttachments();
-        const attachmentsWithFavorite = response.data.map((attachment: Omit<Attachment, 'isFavorite'>) => ({
-          ...attachment,
-          isFavorite: false, // Initialize as not favorite
-        }));
-        setAttachments(attachmentsWithFavorite);
+        const response = await getFiles();
+        setFiles(response);
       } catch (error) {
-        console.error("Error fetching attachments:", error);
+        console.error("Error fetching files:", error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchAttachments();
+    fetchFiles();
   }, []);
 
   const renderContent = () => {
@@ -47,11 +44,11 @@ const MainArea: React.FC<MainAreaProps> = ({ selectedSection }) => {
       case "All Folders":
         return <AllFolders />;
       case "All Files":
-        return <AllFiles attachments={attachments} setAttachments={setAttachments} />; // Pass props
+        return <AllFiles files={files} setFiles={setFiles} />;
       case "Favorites":
-        return <FavFiles attachments={attachments} />; // Pass props to FavFiles
+        return <FavFiles files={files} />;
       case "Settings":
-        return <div>Settings Section</div>; // Replace with actual component
+        return <div>Settings Section</div>;
       default:
         return (
           <>
