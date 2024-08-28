@@ -1,28 +1,28 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 import { FolderType } from "../../utils/types";
-import { getFolders } from "../actions/folder.action";
+import { getFiles } from "../actions/file.action";
 
-export interface FolderState {
+export interface FileState {
   list: FolderType[];
   loading: boolean;
   count: number;
 }
 
-const initialState: FolderState = {
+const initialState: FileState = {
   list: [],
   count: 0,
   loading: false,
 };
 
-export const folderSlice = createSlice({
-  name: "FOLDER",
+export const fileSlice = createSlice({
+  name: "FILE",
   initialState,
   reducers: {
-    setFolderLoading: (state, action: PayloadAction<boolean>) => {
+    setFileLoading: (state, action: PayloadAction<boolean>) => {
       state.loading = action.payload;
     },
-    setFolders: (
+    setFile: (
       state,
       action: PayloadAction<{
         list: FolderType[];
@@ -36,15 +36,15 @@ export const folderSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getFolders.pending, (state) => {
+      .addCase(getFiles.pending, (state) => {
         state.loading = true;
       })
-      .addCase(getFolders.fulfilled, (state, action) => {
+      .addCase(getFiles.fulfilled, (state, action) => {
         state.loading = false;
         state.list = action.payload;
         state.count = action.payload.length;
       })
-      .addCase(getFolders.rejected, (state, action) => {
+      .addCase(getFiles.rejected, (state, action) => {
         state.loading = false;
         state.list = [];
         state.count = 0;
@@ -52,6 +52,6 @@ export const folderSlice = createSlice({
   },
 });
 
-export const { setFolderLoading, setFolders } = folderSlice.actions;
+export const { setFileLoading, setFile } = fileSlice.actions;
 
-export default folderSlice.reducer;
+export default fileSlice.reducer;

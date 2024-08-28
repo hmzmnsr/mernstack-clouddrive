@@ -1,4 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { fileSlice } from "./file.reducer";
 import { folderSlice } from "./folder.reducer";
 import { profileSlice } from "./profile.reducer";
 
@@ -6,6 +7,7 @@ export const store = configureStore({
   reducer: {
     Profile: profileSlice.reducer,
     Folder: folderSlice.reducer,
+    File: fileSlice.reducer,
   },
 });
 

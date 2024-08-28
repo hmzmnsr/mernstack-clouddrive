@@ -3,27 +3,17 @@ import { useDispatch, useSelector } from "react-redux";
 import FlexContainer from "../../../components/containers/flex.container";
 import FolderItem from "../../../components/lists/folder.item";
 import { getFolders } from "../../../redux/actions/folder.action";
-import {
-  setFolderLoading,
-  setFolders,
-} from "../../../redux/reducers/folder.reducer";
+import { AppDispatch } from "../../../redux/reducers/store";
 import { FolderType } from "../../../utils/types";
 
 const AllFolders: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const folderState = useSelector((state: any) => state.Folder);
 
   const { list: folders, isLoading: loading } = folderState;
 
   useEffect(() => {
-    const fetchFolders = async () => {
-      dispatch(setFolderLoading(true));
-      const list = await getFolders();
-      dispatch(setFolders({ list, count: list.length }));
-      dispatch(setFolderLoading(false));
-    };
-
-    fetchFolders();
+    dispatch(getFolders());
   }, [dispatch]);
 
   return (

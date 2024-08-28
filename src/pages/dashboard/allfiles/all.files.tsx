@@ -1,3 +1,5 @@
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import {
   FaFileAlt,
@@ -7,11 +9,9 @@ import {
   FaRegStar,
   FaStar,
 } from "react-icons/fa";
+import { MdFileDownload } from "react-icons/md";
 import SidebarButton from "../../../components/buttons/sidebar.button";
 import CreateFilePopup from "../../../components/popups/create-file-popup";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { MdFileDownload } from "react-icons/md";
 
 interface FileData {
   attachmentName: string;
@@ -24,10 +24,9 @@ interface FileData {
 
 interface AllFilesProps {
   files: FileData[];
-  setFiles: React.Dispatch<React.SetStateAction<FileData[]>>;
 }
 
-const AllFiles: React.FC<AllFilesProps> = ({ files, setFiles }) => {
+const AllFiles: React.FC<AllFilesProps> = ({ files }) => {
   const [showPopup, setShowPopup] = useState(false);
 
   const getFileIcon = (type: string) => {
@@ -45,13 +44,8 @@ const AllFiles: React.FC<AllFilesProps> = ({ files, setFiles }) => {
   };
 
   const toggleFavorite = (index: number) => {
-    setFiles((prevFiles) =>
-      prevFiles.map((file, i) =>
-        i === index
-          ? { ...file, isFavorite: !file.isFavorite }
-          : file
-      )
-    );
+    // Call API
+    //CALL DISPATCH get files
   };
 
   const downloadFile = (file: FileData) => {
@@ -71,16 +65,8 @@ const AllFiles: React.FC<AllFilesProps> = ({ files, setFiles }) => {
   };
 
   const handleCreateFile = (fileName: string, file: File | null) => {
-    const newFile: FileData = {
-      attachmentName: fileName,
-      attachmentType: file ? file.type.split("/")[1] : "doc",
-      size: file ? file.size : 0,
-      dateTime: new Date().toISOString(),
-      isFavorite: false,
-      folderName: "New Folder", // Default folder name
-    };
-
-    setFiles((prev) => [...prev, newFile]);
+    // Call API
+    //CALL DISPATCH get files
   };
 
   return (

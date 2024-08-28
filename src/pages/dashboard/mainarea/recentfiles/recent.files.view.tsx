@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { FaFileAlt, FaFileImage, FaFilePdf, FaFileWord } from "react-icons/fa";
-import { getFiles } from "../../../../services/api"; // Assuming similar API call
+import { useDispatch, useSelector } from "react-redux";
+import { getFiles } from "../../../../redux/actions/file.action";
+import { AppDispatch } from "../../../../redux/reducers/store";
 import "./filescustom.css";
 
 interface FileData {
@@ -14,18 +16,24 @@ interface FileData {
 const RecentFilesView: React.FC = () => {
   const [recentFiles, setRecentFiles] = useState<FileData[]>([]);
 
-  useEffect(() => {
-    const fetchRecentFiles = async () => {
-      try {
-        const filesData = await getFiles();
-        setRecentFiles(filesData.reverse().slice(0, 10)); // Fetch and reverse the files
-      } catch (error) {
-        console.error("Error fetching recent files:", error);
-      }
-    };
+  const dispatch = useDispatch<AppDispatch>();
+  const fileState = useSelector((state: any) => state.File);
 
-    fetchRecentFiles();
-  }, []);
+  const { list: files } = fileState;
+
+  useEffect(() => {
+    dispatch(getFiles());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (files?.length > 0) {
+      const tempFiles = files;
+      // Reverse code here
+      setRecentFiles(tempFiles.slice(0, 10));
+    } else {
+      setRecentFiles([]);
+    }
+  }, [dispatch, files]);
 
   const formatFileSize = (size: number) => {
     if (size < 1024) return `${size} B`;
@@ -63,7 +71,8 @@ const RecentFilesView: React.FC = () => {
             {formatFileSize(file.size)} {/* Example size formatting */}
           </div>
           <div className="col-span-3 w-full h-full flex items-center justify-center text-lg">
-            {new Date(file.dateTime).toLocaleDateString()} {/* Example date formatting */}
+            {new Date(file.dateTime).toLocaleDateString()}{" "}
+            {/* Example date formatting */}
           </div>
           <div className="col-span-2 w-full h-full flex items-center justify-center text-lg">
             {file.folderName} {/* Display folder name */}

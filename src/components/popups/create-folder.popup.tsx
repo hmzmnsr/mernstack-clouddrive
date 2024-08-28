@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { createFolder, getFolders } from "../../redux/actions/folder.action";
-import { setFolderLoading, setFolders } from "../../redux/reducers/folder.reducer";
+import { AppDispatch } from "../../redux/reducers/store";
 
 interface CreateFolderPopupProps {
   onClose: () => void;
@@ -10,17 +10,14 @@ interface CreateFolderPopupProps {
 const CreateFolderPopup: React.FC<CreateFolderPopupProps> = ({ onClose }) => {
   const [folderName, setFolderName] = useState<string>("");
   const [message, setMessage] = useState<string | null>(null);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFolderName(event.target.value);
   };
 
   const updateFolderList = async () => {
-    dispatch(setFolderLoading(true));
-    const list = await getFolders();
-    dispatch(setFolders({ list, count: list.length }));
-    dispatch(setFolderLoading(false));
+    dispatch(getFolders());
   };
 
   const handleCreateFolder = async () => {
@@ -31,7 +28,10 @@ const CreateFolderPopup: React.FC<CreateFolderPopupProps> = ({ onClose }) => {
 
     const folderPath = `/${folderName.trim()}`; // Trim the folder name
     try {
-      const response = await createFolder({ path: folderPath, name: folderName.trim() });
+      const response = await createFolder({
+        path: folderPath,
+        name: folderName.trim(),
+      });
 
       if (response.error) {
         // Check if the error is related to folder existence

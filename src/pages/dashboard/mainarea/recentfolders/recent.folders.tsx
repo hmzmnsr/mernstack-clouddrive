@@ -1,32 +1,32 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import FlexContainer from "../../../../components/containers/flex.container";
 import FolderItem from "../../../../components/lists/folder.item";
 import { getFolders } from "../../../../redux/actions/folder.action";
-import {
-  setFolderLoading,
-  setFolders,
-} from "../../../../redux/reducers/folder.reducer";
+import { AppDispatch } from "../../../../redux/reducers/store";
 import { FolderType } from "../../../../utils/types";
 
 const RecentFolders: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
+  const [list, setList] = useState<FolderType[]>([]);
+
   const folderState = useSelector((state: any) => state.Folder);
 
   const { list: folders, isLoading: loading } = folderState;
 
   useEffect(() => {
-    const fetchFolders = async () => {
-      dispatch(setFolderLoading(true));
-      const list = await getFolders();
-      // Reverse the list to get the most recent folders first, then slice the top 10
-      const top10Folders = list.reverse().slice(0, 10);
-      dispatch(setFolders({ list: top10Folders, count: top10Folders.length }));
-      dispatch(setFolderLoading(false));
-    };
-
-    fetchFolders();
+    dispatch(getFolders());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (folders?.length > 0) {
+      const tempFolders = folders;
+      // Reverse code here
+      setList(tempFolders.slice(0, 10));
+    } else {
+      setList([]);
+    }
+  }, [folders]);
 
   return (
     <FlexContainer className="flex-col w-full">
@@ -35,11 +35,11 @@ const RecentFolders: React.FC = () => {
       </div>
       {loading ? (
         <div>Loading...</div>
-      ) : folders.length === 0 ? (
+      ) : list.length === 0 ? (
         <div>No folders found. Please create a folder.</div>
       ) : (
         <FlexContainer className="w-full px-8 overflow-x-auto custom-scrollbar">
-          {folders.map((folder: FolderType) => (
+          {list.map((folder: FolderType) => (
             <FolderItem key={folder._id} folder={folder} />
           ))}
         </FlexContainer>

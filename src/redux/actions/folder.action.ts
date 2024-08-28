@@ -1,3 +1,4 @@
+import { createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../services/api";
 import { FolderType } from "../../utils/types";
 
@@ -25,12 +26,15 @@ export const deleteFolder = async (folderId: string) => {
   }
 };
 
-export const getFolders = async (): Promise<FolderType[]> => {
-  try {
-    const { data } = await api.get("/folders");
-    return data ?? [];
-  } catch (error) {
-    console.error("Error fetching folders:", error);
-    return [];
+export const getFolders = createAsyncThunk<FolderType[], void>(
+  "folders/getFolders",
+  async (_, { rejectWithValue }) => {
+    try {
+      const { data } = await api.get("/folders");
+      return data ?? [];
+    } catch (error) {
+      console.error("Error fetching folders:", error);
+      return rejectWithValue("Failed to fetch folders");
+    }
   }
-};
+);

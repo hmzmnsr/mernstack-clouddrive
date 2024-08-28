@@ -11,13 +11,18 @@ export type FolderType = {
   path: string;
 };
 
+export type FileType = {
+  _id: string;
+  name: string;
+  path: string;
+};
+
 export type ContextMenuType = {
   visible: boolean;
   x: number;
   y: number;
   folderId: string | null;
 };
-
 
 // src/types/Attachment.ts
 export interface Attachment {

@@ -1,50 +1,34 @@
-import React, { useEffect, useState } from "react";
-import TopNavigation from "./topNavigation/topnavigation";
-import RecentFolders from "./recentfolders/recent.folders";
-import AllFolders from "../allfolders/all.folders";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getFiles } from "../../../redux/actions/file.action";
+import { AppDispatch } from "../../../redux/reducers/store";
 import AllFiles from "../allfiles/all.files";
-import RecentFiles from "./recentfiles/recent.files";
+import AllFolders from "../allfolders/all.folders";
 import FavFiles from "../favfiles/fav.files";
-import { getFiles } from "../../../services/api";
-
-interface FileData {
-  attachmentName: string;
-  attachmentType: string;
-  size: number;
-  dateTime: string;
-  isFavorite: boolean;
-  folderName: string;
-}
+import RecentFiles from "./recentfiles/recent.files";
+import RecentFolders from "./recentfolders/recent.folders";
+import TopNavigation from "./topNavigation/topnavigation";
 
 interface MainAreaProps {
   selectedSection: string;
 }
 
 const MainArea: React.FC<MainAreaProps> = ({ selectedSection }) => {
-  const [files, setFiles] = useState<FileData[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const dispatch = useDispatch<AppDispatch>();
+  const fileState = useSelector((state: any) => state.File);
+
+  const { list: files, isLoading: loading } = fileState;
 
   useEffect(() => {
-    const fetchFiles = async () => {
-      try {
-        const response = await getFiles();
-        setFiles(response);
-      } catch (error) {
-        console.error("Error fetching files:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchFiles();
-  }, []);
+    dispatch(getFiles());
+  }, [dispatch]);
 
   const renderContent = () => {
     switch (selectedSection) {
       case "All Folders":
         return <AllFolders />;
       case "All Files":
-        return <AllFiles files={files} setFiles={setFiles} />;
+        return <AllFiles files={files} />;
       case "Favorites":
         return <FavFiles files={files} />;
       case "Settings":
