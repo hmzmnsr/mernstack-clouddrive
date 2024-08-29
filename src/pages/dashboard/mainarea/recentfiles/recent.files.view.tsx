@@ -3,15 +3,8 @@ import { FaFileAlt, FaFileImage, FaFilePdf, FaFileWord } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { getFiles } from "../../../../redux/actions/file.action";
 import { AppDispatch } from "../../../../redux/reducers/store";
+import { FileData } from "../../../../utils/types";
 import "./filescustom.css";
-
-interface FileData {
-  attachmentName: string;
-  attachmentType: string;
-  size: number;
-  dateTime: string;
-  folderName: string;
-}
 
 const RecentFilesView: React.FC = () => {
   const [recentFiles, setRecentFiles] = useState<FileData[]>([]);
@@ -61,21 +54,22 @@ const RecentFilesView: React.FC = () => {
         <div key={index} className="grid grid-cols-12 bg-white py-2">
           <div className="col-span-2 w-full h-full flex flex-col text-lg items-center justify-center">
             <div className="flex justify-center text-center mb-1">
-              {getFileIcon(file.attachmentType)}
+              {getFileIcon(file.attachmentRef?.type)}
             </div>
             <div className="text-lg text-center">
-              {file.attachmentName} {/* Ensuring attachmentName is displayed */}
+              {file.name} {/* Ensuring attachmentName is displayed */}
             </div>
           </div>
           <div className="col-span-2 w-full h-full flex items-center justify-center text-lg">
-            {formatFileSize(file.size)} {/* Example size formatting */}
+            {formatFileSize(file.attachmentRef?.size)}{" "}
+            {/* Example size formatting */}
           </div>
           <div className="col-span-3 w-full h-full flex items-center justify-center text-lg">
-            {new Date(file.dateTime).toLocaleDateString()}{" "}
+            {new Date(file.attachmentRef?.createdAt).toLocaleDateString()}{" "}
             {/* Example date formatting */}
           </div>
           <div className="col-span-2 w-full h-full flex items-center justify-center text-lg">
-            {file.folderName} {/* Display folder name */}
+            {file.folderRef?.name} {/* Display folder name */}
           </div>
           <div className="col-span-3 w-full h-full flex items-center justify-center text-lg">
             Access Info Placeholder {/* Placeholder for access info */}

@@ -10,23 +10,23 @@ import {
   FaStar,
 } from "react-icons/fa";
 import { MdFileDownload } from "react-icons/md";
+import { useDispatch } from "react-redux";
 import SidebarButton from "../../../components/buttons/sidebar.button";
 import CreateFilePopup from "../../../components/popups/create-file-popup";
-
-interface FileData {
-  attachmentName: string;
-  attachmentType: string;
-  size: number;
-  dateTime: string;
-  isFavorite: boolean;
-  folderName: string;
-}
+import {
+  createAttachment,
+  createFile,
+  getFiles,
+} from "../../../redux/actions/file.action";
+import { AppDispatch } from "../../../redux/reducers/store";
+import { FileData } from "../../../utils/types";
 
 interface AllFilesProps {
   files: FileData[];
 }
 
 const AllFiles: React.FC<AllFilesProps> = ({ files }) => {
+  const dispatch = useDispatch<AppDispatch>();
   const [showPopup, setShowPopup] = useState(false);
 
   const getFileIcon = (type: string) => {
@@ -43,14 +43,10 @@ const AllFiles: React.FC<AllFilesProps> = ({ files }) => {
     }
   };
 
-  const toggleFavorite = (index: number) => {
-    // Call API
-    //CALL DISPATCH get files
-  };
+  const toggleFavorite = (_id: string, isFavorite: boolean) => {};
 
   const downloadFile = (file: FileData) => {
     // Mock download function
-    alert(`Downloading ${file.attachmentName}`);
   };
 
   const formatFileSize = (size: number) => {
@@ -64,9 +60,26 @@ const AllFiles: React.FC<AllFilesProps> = ({ files }) => {
     return date.toLocaleDateString() + " " + date.toLocaleTimeString();
   };
 
-  const handleCreateFile = (fileName: string, file: File | null) => {
-    // Call API
-    //CALL DISPATCH get files
+  const handleCreateFile = async (
+    fileName: string,
+    file: File | null,
+    selectedFolder: string
+  ) => {
+    const attachmentData = await createAttachment({
+      name: file?.name || "",
+      type: file?.type || "",
+      size: file?.size || 0,
+    });
+
+    if (attachmentData?._id) {
+      await createFile({
+        attachmentRef: attachmentData._id,
+        folderRef: selectedFolder,
+        name: fileName,
+      });
+
+      dispatch(getFiles());
+    }
   };
 
   return (
@@ -91,9 +104,11 @@ const AllFiles: React.FC<AllFilesProps> = ({ files }) => {
             <div key={index} className="w-full sm:w-1/2 lg:w-1/3 p-2">
               <div className="bg-white p-4 rounded-lg shadow-md">
                 <div className="flex items-center mb-2">
-                  <div className="mr-4">{getFileIcon(file.attachmentType)}</div>
+                  <div className="mr-4">
+                    {getFileIcon(file.attachmentRef?.type)}
+                  </div>
                   <div className="flex-1 text-lg font-semibold">
-                    {file.attachmentName}
+                    {file.name}
                   </div>
                   <button
                     onClick={() => downloadFile(file)}
@@ -102,7 +117,7 @@ const AllFiles: React.FC<AllFilesProps> = ({ files }) => {
                     <MdFileDownload size={24} />
                   </button>
                   <button
-                    onClick={() => toggleFavorite(index)}
+                    onClick={() => toggleFavorite(file._id, file.isFavorite)}
                     className="text-yellow-500"
                   >
                     {file.isFavorite ? (
@@ -113,9 +128,9 @@ const AllFiles: React.FC<AllFilesProps> = ({ files }) => {
                   </button>
                 </div>
                 <div className="text-sm text-gray-600">
-                  <div>Size: {formatFileSize(file.size)}</div>
-                  <div>Date: {formatDateTime(file.dateTime)}</div>
-                  <div>Folder Name: {file.folderName}</div>
+                  <div>Size: {formatFileSize(file.attachmentRef?.size)}</div>
+                  <div>Date: {formatDateTime(file.createdAt)}</div>
+                  <div>Folder Name: {file.folderRef?.name}</div>
                 </div>
               </div>
             </div>

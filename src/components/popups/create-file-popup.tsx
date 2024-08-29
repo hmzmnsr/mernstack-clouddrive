@@ -25,7 +25,8 @@ const CreateFilePopup: React.FC<CreateFilePopupProps> = ({
     dispatch(getFolders());
   }, [dispatch]);
 
-  const handleCreate = () => {
+  const handleCreate = (e: React.FormEvent) => {
+    e.preventDefault();
     onCreate(fileName, file, selectedFolder);
     onClose();
   };
@@ -83,6 +84,7 @@ const CreateFilePopup: React.FC<CreateFilePopupProps> = ({
             Cancel
           </button>
           <button
+            type="button"
             onClick={handleCreate}
             className="bg-customBlueTwo text-white py-2 px-8 rounded"
           >

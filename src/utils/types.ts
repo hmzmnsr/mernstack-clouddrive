@@ -33,3 +33,13 @@ export interface Attachment {
   isFavorite: boolean;
   folder: string; // Add this if it’s part of your data
 }
+
+export interface FileData {
+  _id: string;
+  name: string;
+  attachmentRef: any;
+  userRef: any;
+  folderRef: any;
+  createdAt: string;
+  isFavorite: boolean;
+}

@@ -1,9 +1,23 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../services/api";
 
+export const createAttachment = async (attachmentData: {
+  name: string;
+  type: string;
+  size: number;
+}) => {
+  try {
+    const { data } = await api.post("/attachments", attachmentData);
+    return data;
+  } catch (error) {
+    console.error("Error creating attachment:", error);
+    return null;
+  }
+};
 export const createFile = async (fileData: {
   attachmentRef: string;
-  folderPath: string;
+  folderRef: string;
+  name: string;
 }) => {
   try {
     const { data } = await api.post("/files", fileData);
@@ -30,17 +44,7 @@ export const getFiles = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const { data } = await api.get("/files");
-      return data.map((file: any) => {
-        const attachmentRef = file.attachmentRef || {}; // Default to an empty object if null
-        return {
-          attachmentName: attachmentRef.attachmentName || "Unknown File",
-          attachmentType: attachmentRef.attachmentType || "unknown",
-          size: attachmentRef.size || 0,
-          dateTime: attachmentRef.dateTime || new Date().toISOString(),
-          folderName: file.folderRef?.name || "Unknown Folder",
-          isFavorite: file.isFavorite || false,
-        };
-      });
+      return data;
     } catch (error) {
       console.error("Error fetching folders:", error);
       return rejectWithValue("Failed to fetch folders");
