@@ -1,17 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { FolderType } from "../../utils/types";
-import { getFolders } from "../actions/folder.action";
+import { getAllFolders, getFolders } from "../actions/folder.action";
 
 export interface FolderState {
   list: FolderType[];
   loading: boolean;
   count: number;
+  allFolders: FolderType[];
 }
 
 const initialState: FolderState = {
   list: [],
   count: 0,
   loading: false,
+  allFolders: [],
 };
 
 export const folderSlice = createSlice({
@@ -32,6 +34,12 @@ export const folderSlice = createSlice({
         state.loading = false;
         state.list = [];
         state.count = 0;
+      })
+      .addCase(getAllFolders.fulfilled, (state, action) => {
+        state.allFolders = action.payload;
+      })
+      .addCase(getAllFolders.rejected, (state, action) => {
+        state.allFolders = [];
       });
   },
 });

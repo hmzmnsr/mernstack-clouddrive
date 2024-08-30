@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getFolders } from "../../redux/actions/folder.action";
+import { getAllFolders } from "../../redux/actions/folder.action";
 import { AppDispatch } from "../../redux/reducers/store";
 import { FolderType } from "../../utils/types";
 
@@ -14,7 +14,7 @@ const CreateFilePopup: React.FC<CreateFilePopupProps> = ({
   onCreate,
 }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { list: folders, isLoading: loading } = useSelector(
+  const { allFolders: folders, isLoading: loading } = useSelector(
     (state: any) => state.Folder
   );
   const [fileName, setFileName] = useState<string>("");
@@ -22,7 +22,7 @@ const CreateFilePopup: React.FC<CreateFilePopupProps> = ({
   const [selectedFolder, setSelectedFolder] = useState<string>("");
 
   useEffect(() => {
-    dispatch(getFolders());
+    dispatch(getAllFolders());
   }, [dispatch]);
 
   const handleCreate = (e: React.FormEvent) => {
