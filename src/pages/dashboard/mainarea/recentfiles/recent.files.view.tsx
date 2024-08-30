@@ -48,6 +48,11 @@ const RecentFilesView: React.FC = () => {
     }
   };
 
+  const formatDateTime = (dateString: string) => {
+    const date = new Date(dateString);
+    return `${date.toLocaleDateString()} ${date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+  };
+
   return (
     <div className="h-72 overflow-auto custom-scrollbar">
       {recentFiles.map((file, index) => (
@@ -57,22 +62,20 @@ const RecentFilesView: React.FC = () => {
               {getFileIcon(file.attachmentRef?.type)}
             </div>
             <div className="text-lg text-center">
-              {file.name} {/* Ensuring attachmentName is displayed */}
+              {file.name}
             </div>
           </div>
           <div className="col-span-2 w-full h-full flex items-center justify-center text-lg">
-            {formatFileSize(file.attachmentRef?.size)}{" "}
-            {/* Example size formatting */}
+            {formatFileSize(file.attachmentRef?.size)}
           </div>
           <div className="col-span-3 w-full h-full flex items-center justify-center text-lg">
-            {new Date(file.attachmentRef?.createdAt).toLocaleDateString()}{" "}
-            {/* Example date formatting */}
+            {formatDateTime(file.attachmentRef?.createdAt)}
           </div>
           <div className="col-span-2 w-full h-full flex items-center justify-center text-lg">
-            {file.folderRef?.name} {/* Display folder name */}
+            {file.folderRef?.name}
           </div>
           <div className="col-span-3 w-full h-full flex items-center justify-center text-lg">
-            Access Info Placeholder {/* Placeholder for access info */}
+            Access Info Placeholder
           </div>
         </div>
       ))}

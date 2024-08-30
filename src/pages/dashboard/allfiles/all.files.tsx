@@ -17,6 +17,7 @@ import {
   createAttachment,
   createFile,
   getFiles,
+  setFavorite
 } from "../../../redux/actions/file.action";
 import { AppDispatch } from "../../../redux/reducers/store";
 import { FileData } from "../../../utils/types";
@@ -43,7 +44,10 @@ const AllFiles: React.FC<AllFilesProps> = ({ files }) => {
     }
   };
 
-  const toggleFavorite = (_id: string, isFavorite: boolean) => {};
+  const toggleFavorite = async (fileId: string, isFavorite: boolean) => {
+    await dispatch(setFavorite({ id: fileId, isFavorite }));
+    dispatch(getFiles()); // Refresh the file list
+  };
 
   const downloadFile = (file: FileData) => {
     // Mock download function
@@ -53,14 +57,19 @@ const AllFiles: React.FC<AllFilesProps> = ({ files }) => {
     if (size < 1024) return `${size} B`;
     if (size < 1024 * 1024) return `${(size / 1024).toFixed(2)} KB`;
     return `${(size / (1024 * 1024)).toFixed(2)} MB`;
-  };
+  }; 
 
   const formatDateTime = (dateTime: string) => {
+    if (!dateTime) return "Date not available";
     const date = new Date(dateTime);
+    if (isNaN(date.getTime())) {
+      console.error("Invalid date string:", dateTime);
+      return "Invalid Date";
+    }
     return date.toLocaleDateString() + " " + date.toLocaleTimeString();
   };
 
-  const handleCreateFile = async (
+  const handleCreateFile = async ( 
     fileName: string,
     file: File | null,
     selectedFolder: string
@@ -100,41 +109,43 @@ const AllFiles: React.FC<AllFilesProps> = ({ files }) => {
         <div>No files found.</div>
       ) : (
         <div className="flex flex-wrap -mx-2">
-          {files.map((file, index) => (
-            <div key={index} className="w-full sm:w-1/2 lg:w-1/3 p-2">
-              <div className="bg-white p-4 rounded-lg shadow-md">
-                <div className="flex items-center mb-2">
-                  <div className="mr-4">
-                    {getFileIcon(file.attachmentRef?.type)}
+          {files.map((file, index) => {
+            return (
+              <div key={index} className="w-full sm:w-1/2 lg:w-1/3 p-2">
+                <div className="bg-white p-4 rounded-lg shadow-md">
+                  <div className="flex items-center mb-2">
+                    <div className="mr-4">
+                      {getFileIcon(file.attachmentRef?.type)}
+                    </div>
+                    <div className="flex-1 text-lg font-semibold">
+                      {file.name}
+                    </div>
+                    <button
+                      onClick={() => downloadFile(file)}
+                      className="text-yellow-500 mt-1"
+                    >
+                      <MdFileDownload size={24} />
+                    </button>
+                    <button
+                      onClick={() => toggleFavorite(file._id, !file.isFavorite)}
+                      className="text-yellow-500"
+                    >
+                      {file.isFavorite ? (
+                        <FaStar size={18} />
+                      ) : (
+                        <FaRegStar size={18} />
+                      )}
+                    </button>
                   </div>
-                  <div className="flex-1 text-lg font-semibold">
-                    {file.name}
+                  <div className="text-sm text-gray-600">
+                    <div>Size: {formatFileSize(file.attachmentRef?.size)}</div>
+                    <div>Date: {formatDateTime(file.attachmentRef?.createdAt)}</div>
+                    <div>Folder Name: {file.folderRef?.name}</div>
                   </div>
-                  <button
-                    onClick={() => downloadFile(file)}
-                    className="text-yellow-500 mt-1"
-                  >
-                    <MdFileDownload size={24} />
-                  </button>
-                  <button
-                    onClick={() => toggleFavorite(file._id, file.isFavorite)}
-                    className="text-yellow-500"
-                  >
-                    {file.isFavorite ? (
-                      <FaStar size={18} />
-                    ) : (
-                      <FaRegStar size={18} />
-                    )}
-                  </button>
-                </div>
-                <div className="text-sm text-gray-600">
-                  <div>Size: {formatFileSize(file.attachmentRef?.size)}</div>
-                  <div>Date: {formatDateTime(file.createdAt)}</div>
-                  <div>Folder Name: {file.folderRef?.name}</div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
 

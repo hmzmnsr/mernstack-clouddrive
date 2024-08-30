@@ -1,36 +1,64 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import FlexContainer from "../../../components/containers/flex.container";
 import FolderItem from "../../../components/lists/folder.item";
+import SelectFolder from "./selectfolders/select.folder";
 import { getFolders } from "../../../redux/actions/folder.action";
+import { getFiles } from "../../../redux/actions/file.action";
 import { AppDispatch } from "../../../redux/reducers/store";
-import { FolderType } from "../../../utils/types";
+import { FolderType, FileData } from "../../../utils/types";
 
 const AllFolders: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
+  
   const folderState = useSelector((state: any) => state.Folder);
+  const fileState = useSelector((state: any) => state.File);
 
-  const { list: folders, isLoading: loading } = folderState;
+  const [selectedFolder, setSelectedFolder] = useState<FolderType | null>(null);
+
+  const { list: folders, isLoading: loadingFolders } = folderState;
+  const { list: files, isLoading: loadingFiles } = fileState;
 
   useEffect(() => {
     dispatch(getFolders());
+    dispatch(getFiles());
   }, [dispatch]);
+
+  const handleFolderClick = (folder: FolderType) => {
+    setSelectedFolder(folder);
+  };
+
+  const handleReturn = () => {
+    setSelectedFolder(null);
+  };
 
   return (
     <FlexContainer className="flex-col p-4">
-      <div className="pb-2 pl-3 text-lg font-bold tracking-wide font-sans leading-loose">
-        All Folders
-      </div>
-      {loading ? (
-        <div>Loading...</div>
-      ) : folders.length === 0 ? (
-        <div>No folders found. Please create a folder.</div>
+      {!selectedFolder ? (
+        <>
+          <div className="pb-2 pl-3 text-lg font-bold tracking-wide font-sans leading-loose">
+            All Folders
+          </div>
+          {loadingFolders ? (
+            <div>Loading folders...</div>
+          ) : folders.length === 0 ? (
+            <div>No folders found. Please create a folder.</div>
+          ) : (
+            <FlexContainer className="pl-1 w-full flex-wrap">
+              {folders.map((folder: FolderType) => (
+                <div key={folder._id} onClick={() => handleFolderClick(folder)}>
+                  <FolderItem folder={folder} />
+                </div>
+              ))}
+            </FlexContainer>
+          )}
+        </>
       ) : (
-        <FlexContainer className="pl-1 w-full flex-wrap">
-          {folders.map((folder: FolderType) => (
-            <FolderItem key={folder._id} folder={folder} />
-          ))}
-        </FlexContainer>
+        <SelectFolder
+          folder={selectedFolder}
+          files={files.filter((file: FileData) => file.folderRef?._id === selectedFolder._id)}
+          onReturn={handleReturn}
+        />
       )}
     </FlexContainer>
   );
