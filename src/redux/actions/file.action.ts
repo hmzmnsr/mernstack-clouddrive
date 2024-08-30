@@ -1,4 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 import api from "../../services/api";
 
 // Create a new attachment
@@ -29,6 +30,10 @@ export const createFile = async (fileData: {
     console.error("Error creating file", error);
     return null;
   }
+};
+
+export const uploadFile = async (url: string, fileData: File) => {
+  await axios.put(url, fileData);
 };
 
 // Delete a file by its ID
@@ -75,7 +80,9 @@ export const setFavorite = createAsyncThunk(
   "files/setFavorite",
   async (params: { id: string; isFavorite: boolean }, { rejectWithValue }) => {
     try {
-      const { data } = await api.patch(`/files/favorite/${params.id}`, { isFavorite: params.isFavorite });
+      const { data } = await api.patch(`/files/favorite/${params.id}`, {
+        isFavorite: params.isFavorite,
+      });
       return data;
     } catch (error) {
       console.error("Error setting favorite:", error);

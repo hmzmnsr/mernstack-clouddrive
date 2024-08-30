@@ -17,7 +17,8 @@ import {
   createAttachment,
   createFile,
   getFiles,
-  setFavorite
+  setFavorite,
+  uploadFile,
 } from "../../../redux/actions/file.action";
 import { AppDispatch } from "../../../redux/reducers/store";
 import { FileData } from "../../../utils/types";
@@ -57,7 +58,7 @@ const AllFiles: React.FC<AllFilesProps> = ({ files }) => {
     if (size < 1024) return `${size} B`;
     if (size < 1024 * 1024) return `${(size / 1024).toFixed(2)} KB`;
     return `${(size / (1024 * 1024)).toFixed(2)} MB`;
-  }; 
+  };
 
   const formatDateTime = (dateTime: string) => {
     if (!dateTime) return "Date not available";
@@ -69,18 +70,25 @@ const AllFiles: React.FC<AllFilesProps> = ({ files }) => {
     return date.toLocaleDateString() + " " + date.toLocaleTimeString();
   };
 
-  const handleCreateFile = async ( 
+  const handleCreateFile = async (
     fileName: string,
     file: File | null,
     selectedFolder: string
   ) => {
+    if (!file) {
+      console.error("No file selected");
+      return;
+    }
+
     const attachmentData = await createAttachment({
-      name: file?.name || "",
-      type: file?.type || "",
-      size: file?.size || 0,
+      name: file.name,
+      type: file.type,
+      size: file.size,
     });
 
     if (attachmentData?._id) {
+      await uploadFile(attachmentData.url, file);
+
       await createFile({
         attachmentRef: attachmentData._id,
         folderRef: selectedFolder,
@@ -139,7 +147,9 @@ const AllFiles: React.FC<AllFilesProps> = ({ files }) => {
                   </div>
                   <div className="text-sm text-gray-600">
                     <div>Size: {formatFileSize(file.attachmentRef?.size)}</div>
-                    <div>Date: {formatDateTime(file.attachmentRef?.createdAt)}</div>
+                    <div>
+                      Date: {formatDateTime(file.attachmentRef?.createdAt)}
+                    </div>
                     <div>Folder Name: {file.folderRef?.name}</div>
                   </div>
                 </div>
