@@ -1,6 +1,6 @@
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   FaFileAlt,
   FaFileImage,
@@ -10,26 +10,38 @@ import {
   FaStar,
 } from "react-icons/fa";
 import { MdFileDownload } from "react-icons/md";
-import { useDispatch } from "react-redux";
-import SidebarButton from "../../../components/buttons/sidebar.button";
-import CreateFilePopup from "../../../components/popups/create-file-popup";
+import { useDispatch, useSelector } from "react-redux";
+import SidebarButton from "../../components/buttons/sidebar.button";
+import Spinner from "../../components/loaders/spinner.loader";
+import CreateFilePopup from "../../components/popups/create-file-popup";
 import {
   createAttachment,
   createFile,
   getFiles,
   setFavorite,
   uploadFile,
-} from "../../../redux/actions/file.action";
-import { AppDispatch } from "../../../redux/reducers/store";
-import { FileData } from "../../../utils/types";
+} from "../../redux/actions/file.action";
+import { AppDispatch } from "../../redux/reducers/store";
+import { formatDateTime, formatFileSize } from "../../utils/helper";
+import { FileData } from "../../utils/types";
 
-interface AllFilesProps {
-  files: FileData[];
-}
-
-const AllFiles: React.FC<AllFilesProps> = ({ files }) => {
+const FilesPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [showPopup, setShowPopup] = useState(false);
+
+  const [files, setFiles] = useState<FileData[]>([]);
+
+  const fileState = useSelector((state: any) => state.File);
+
+  const { list, loading } = fileState;
+
+  useEffect(() => {
+    dispatch(getFiles());
+  }, [dispatch]);
+
+  useEffect(() => {
+    setFiles(list ?? []);
+  }, [dispatch, list]);
 
   const getFileIcon = (type: string) => {
     switch (type) {
@@ -52,22 +64,6 @@ const AllFiles: React.FC<AllFilesProps> = ({ files }) => {
 
   const downloadFile = (file: FileData) => {
     // Mock download function
-  };
-
-  const formatFileSize = (size: number) => {
-    if (size < 1024) return `${size} B`;
-    if (size < 1024 * 1024) return `${(size / 1024).toFixed(2)} KB`;
-    return `${(size / (1024 * 1024)).toFixed(2)} MB`;
-  };
-
-  const formatDateTime = (dateTime: string) => {
-    if (!dateTime) return "Date not available";
-    const date = new Date(dateTime);
-    if (isNaN(date.getTime())) {
-      console.error("Invalid date string:", dateTime);
-      return "Invalid Date";
-    }
-    return date.toLocaleDateString() + " " + date.toLocaleTimeString();
   };
 
   const handleCreateFile = async (
@@ -113,7 +109,9 @@ const AllFiles: React.FC<AllFilesProps> = ({ files }) => {
           Create File
         </SidebarButton>
       </div>
-      {files.length === 0 ? (
+      {loading ? (
+        <Spinner />
+      ) : files.length === 0 ? (
         <div>No files found.</div>
       ) : (
         <div className="flex flex-wrap -mx-2">
@@ -169,4 +167,4 @@ const AllFiles: React.FC<AllFilesProps> = ({ files }) => {
   );
 };
 
-export default AllFiles;
+export default FilesPage;

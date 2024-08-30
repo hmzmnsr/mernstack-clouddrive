@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import FlexContainer from "../../../components/containers/flex.container";
-import FolderItem from "../../../components/lists/folder.item";
-import { getFiles } from "../../../redux/actions/file.action";
-import { getFolders } from "../../../redux/actions/folder.action";
-import { AppDispatch } from "../../../redux/reducers/store";
-import { FileData, FolderType } from "../../../utils/types";
+import FlexContainer from "../../components/containers/flex.container";
+import FolderItem from "../../components/lists/folder.item";
+import Spinner from "../../components/loaders/spinner.loader";
+import { getFolders } from "../../redux/actions/folder.action";
+import { AppDispatch } from "../../redux/reducers/store";
+import { FileData, FolderType } from "../../utils/types";
 import SelectFolder from "./selectfolders/select.folder";
 
 const AllFolders: React.FC = () => {
@@ -16,12 +16,11 @@ const AllFolders: React.FC = () => {
 
   const [selectedFolder, setSelectedFolder] = useState<FolderType | null>(null);
 
-  const { list: folders, isLoading: loadingFolders } = folderState;
+  const { list: folders, loading: loadingFolders } = folderState;
   const { list: files } = fileState;
 
   useEffect(() => {
     dispatch(getFolders());
-    dispatch(getFiles());
   }, [dispatch]);
 
   const handleFolderClick = (folder: FolderType) => {
@@ -40,7 +39,7 @@ const AllFolders: React.FC = () => {
             All Folders
           </div>
           {loadingFolders ? (
-            <div>Loading folders...</div>
+            <Spinner />
           ) : folders.length === 0 ? (
             <div>No folders found. Please create a folder.</div>
           ) : (

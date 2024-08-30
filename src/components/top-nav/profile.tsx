@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { RootState } from "../../../../redux/reducers/store";
+import { RootState } from "../../redux/reducers/store";
 
 const ProfileName: React.FC = () => {
   // Use the correct type for the Redux state

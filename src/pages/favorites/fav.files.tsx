@@ -1,7 +1,6 @@
-import React from "react";
-import FlexContainer from "../../../components/containers/flex.container";
 import { FaFileAlt, FaFileImage, FaFilePdf, FaFileWord } from "react-icons/fa";
 import { MdFileDownload } from "react-icons/md";
+import FlexContainer from "../../components/containers/flex.container";
 
 interface FileData {
   attachmentName: string;
@@ -12,12 +11,8 @@ interface FileData {
   folderName: string;
 }
 
-interface FavFilesProps {
-  files: FileData[];
-}
-
-const FavFiles: React.FC<FavFilesProps> = ({ files }) => {
-  const favoriteFiles = files.filter((file) => file.isFavorite);
+const FavFiles = () => {
+  const favoriteFiles: any[] = [];
 
   const getFileIcon = (type: string) => {
     switch (type) {

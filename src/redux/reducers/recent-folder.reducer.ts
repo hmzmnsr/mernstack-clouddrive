@@ -1,34 +1,34 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { FolderType } from "../../utils/types";
-import { getFolders } from "../actions/folder.action";
+import { getRecentFolders } from "../actions/folder.action";
 
-export interface FolderState {
+export interface RecentFolderState {
   list: FolderType[];
   loading: boolean;
   count: number;
 }
 
-const initialState: FolderState = {
+const initialState: RecentFolderState = {
   list: [],
   count: 0,
-  loading: false,
+  loading: true,
 };
 
-export const folderSlice = createSlice({
-  name: "FOLDER",
+export const recentFolderSlice = createSlice({
+  name: "RECENT_FOLDER",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getFolders.pending, (state) => {
+      .addCase(getRecentFolders.pending, (state) => {
         state.loading = true;
       })
-      .addCase(getFolders.fulfilled, (state, action) => {
+      .addCase(getRecentFolders.fulfilled, (state, action) => {
         state.loading = false;
         state.list = action.payload;
         state.count = action.payload.length;
       })
-      .addCase(getFolders.rejected, (state, action) => {
+      .addCase(getRecentFolders.rejected, (state, action) => {
         state.loading = false;
         state.list = [];
         state.count = 0;
@@ -36,4 +36,4 @@ export const folderSlice = createSlice({
   },
 });
 
-export default folderSlice.reducer;
+export default recentFolderSlice.reducer;

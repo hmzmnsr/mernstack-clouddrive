@@ -38,3 +38,16 @@ export const getFolders = createAsyncThunk<FolderType[], void>(
     }
   }
 );
+
+export const getRecentFolders = createAsyncThunk<FolderType[], void>(
+  "folders/getRecentFolders",
+  async (_, { rejectWithValue }) => {
+    try {
+      const { data } = await api.get("/folders/recent");
+      return data ?? [];
+    } catch (error) {
+      console.error("Error fetching folders:", error);
+      return rejectWithValue("Failed to fetch folders");
+    }
+  }
+);

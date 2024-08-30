@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getUserProfile, loginUser } from "../../redux/actions/user.action";
-import { setProfile } from "../../redux/reducers/profile.reducer";
+import { getProfile, loginUser } from "../../redux/actions/user.action";
+import { AppDispatch } from "../../redux/reducers/store";
 import SubmitButton from "../buttons/submit.button";
 import FlexContainer from "../containers/flex.container";
 import CheckBox from "../inputs/checkbox.input";
@@ -14,30 +14,17 @@ const LoginForm: React.FC = () => {
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      const token = await loginUser({ email, password });
 
-      if (token) {
-        if (rememberMe) {
-          localStorage.setItem("token", token);
-        }
+    const token = await loginUser({ email, password });
 
-        const profileData = await getUserProfile();
-        if (profileData) {
-          dispatch(setProfile(profileData));
-          navigate("/dashboard");
-        } else {
-          setError("Failed to load user profile");
-        }
-      } else {
-        setError("Invalid email or password");
-      }
-    } catch (err) {
-      console.error(err);
+    if (token) {
+      dispatch(getProfile());
+      navigate("/dashboard");
+    } else {
       setError("Invalid email or password");
     }
   };

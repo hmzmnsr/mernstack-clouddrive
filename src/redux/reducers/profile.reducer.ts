@@ -1,6 +1,6 @@
-import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 import { ProfileType } from "../../utils/types";
+import { getProfile } from "../actions/user.action";
 
 export interface ProfileState {
   profile: ProfileType | null;
@@ -18,14 +18,6 @@ export const profileSlice = createSlice({
   name: "PROFILE",
   initialState,
   reducers: {
-    setProfileLoading: (state, action: PayloadAction<boolean>) => {
-      state.loading = action.payload;
-    },
-    setProfile: (state, action: PayloadAction<ProfileType | null>) => {
-      state.profile = action.payload;
-      state.isAuthenticated = !!action.payload; // Set to true only if a profile is loaded
-      state.loading = false;
-    },
     logOut: (state) => {
       state.isAuthenticated = false;
       state.loading = false;
@@ -33,8 +25,25 @@ export const profileSlice = createSlice({
       localStorage.removeItem("token"); // Clear token on logout
     },
   },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getProfile.pending, (state) => {
+        state.loading = true;
+        state.isAuthenticated = false;
+      })
+      .addCase(getProfile.fulfilled, (state, action) => {
+        state.loading = false;
+        state.profile = action.payload;
+        state.isAuthenticated = true;
+      })
+      .addCase(getProfile.rejected, (state, action) => {
+        state.loading = false;
+        state.profile = null;
+        state.isAuthenticated = false;
+      });
+  },
 });
 
-export const { setProfile, logOut, setProfileLoading } = profileSlice.actions;
+export const { logOut } = profileSlice.actions;
 
 export default profileSlice.reducer;

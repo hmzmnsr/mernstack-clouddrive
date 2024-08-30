@@ -18,15 +18,3 @@ api.interceptors.request.use(
 );
 
 export default api;
-
-export const getUsers = () => api.get("/users");
-
-export const createUser = (userData: {
-  name: string;
-  email: string;
-  password: string;
-  phone: string;
-}) => api.post("/users", userData);
-
-export const loginUser = (credentials: { email: string; password: string }) =>
-  api.post("/users/login", credentials);

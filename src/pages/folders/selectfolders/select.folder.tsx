@@ -1,8 +1,15 @@
 import React from "react";
-import { FaFileAlt, FaFileImage, FaFilePdf, FaFileWord, FaRegStar, FaStar } from "react-icons/fa";
-import { MdFileDownload, MdArrowBackIos } from "react-icons/md";
-import FlexContainer from "../../../../components/containers/flex.container";
-import { FolderType, FileData } from "../../../../utils/types";
+import {
+  FaFileAlt,
+  FaFileImage,
+  FaFilePdf,
+  FaFileWord,
+  FaRegStar,
+  FaStar,
+} from "react-icons/fa";
+import { MdArrowBackIos, MdFileDownload } from "react-icons/md";
+import FlexContainer from "../../../components/containers/flex.container";
+import { FileData, FolderType } from "../../../utils/types";
 
 interface SelectFolderProps {
   folder: FolderType;
@@ -26,7 +33,11 @@ const formatDateTime = (dateTime: string) => {
   return date.toLocaleDateString() + " " + date.toLocaleTimeString();
 };
 
-const SelectFolder: React.FC<SelectFolderProps> = ({ folder, files, onReturn }) => {
+const SelectFolder: React.FC<SelectFolderProps> = ({
+  folder,
+  files,
+  onReturn,
+}) => {
   const getFileIcon = (type: string) => {
     switch (type) {
       case "pdf":
@@ -49,7 +60,9 @@ const SelectFolder: React.FC<SelectFolderProps> = ({ folder, files, onReturn }) 
     // Mock download function
   };
 
-  const filteredFiles = files.filter(file => file.folderRef?._id === folder._id);
+  const filteredFiles = files.filter(
+    (file) => file.folderRef?._id === folder._id
+  );
 
   return (
     <FlexContainer className="flex-col px-3">
@@ -58,8 +71,11 @@ const SelectFolder: React.FC<SelectFolderProps> = ({ folder, files, onReturn }) 
           Folder: {folder.name}
         </div>
         <div className="col-span-2 flex justify-end mr-10">
-          <button onClick={onReturn} className="flex items-center py-2 px-8 text-lg bg-customBlueTwo text-white rounded-xl hover:bg-blue-600">
-            <MdArrowBackIos/> Back
+          <button
+            onClick={onReturn}
+            className="flex items-center py-2 px-8 text-lg bg-customBlueTwo text-white rounded-xl hover:bg-blue-600"
+          >
+            <MdArrowBackIos /> Back
           </button>
         </div>
       </div>
@@ -72,8 +88,12 @@ const SelectFolder: React.FC<SelectFolderProps> = ({ folder, files, onReturn }) 
             <div key={index} className="w-full sm:w-1/2 lg:w-1/3 p-2">
               <div className="bg-white p-4 rounded-lg shadow-md">
                 <div className="flex items-center mb-2">
-                  <div className="mr-4">{getFileIcon(file.attachmentRef?.type)}</div>
-                  <div className="flex-1 text-lg font-semibold">{file.name}</div>
+                  <div className="mr-4">
+                    {getFileIcon(file.attachmentRef?.type)}
+                  </div>
+                  <div className="flex-1 text-lg font-semibold">
+                    {file.name}
+                  </div>
                   <button
                     onClick={() => downloadFile(file)}
                     className="text-yellow-500 mt-1"
@@ -93,7 +113,9 @@ const SelectFolder: React.FC<SelectFolderProps> = ({ folder, files, onReturn }) 
                 </div>
                 <div className="text-sm text-gray-600">
                   <div>Size: {formatFileSize(file.attachmentRef?.size)}</div>
-                  <div>Date: {formatDateTime(file.attachmentRef?.createdAt)}</div>
+                  <div>
+                    Date: {formatDateTime(file.attachmentRef?.createdAt)}
+                  </div>
                 </div>
               </div>
             </div>

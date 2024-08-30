@@ -61,6 +61,19 @@ export const getFiles = createAsyncThunk(
   }
 );
 
+export const getRecentFiles = createAsyncThunk(
+  "files/getRecentFiles",
+  async (_, { rejectWithValue }) => {
+    try {
+      const { data } = await api.get("/files/recent");
+      return data;
+    } catch (error) {
+      console.error("Error fetching files:", error);
+      return rejectWithValue("Failed to fetch files");
+    }
+  }
+);
+
 // Fetch favorite files
 export const getFavoriteFiles = createAsyncThunk(
   "files/getFavoriteFiles",

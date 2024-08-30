@@ -1,31 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import FlexContainer from "../../../../components/containers/flex.container";
-import FolderItem from "../../../../components/lists/folder.item";
-import { getFolders } from "../../../../redux/actions/folder.action";
-import { AppDispatch } from "../../../../redux/reducers/store";
-import { FolderType } from "../../../../utils/types";
+import { getRecentFolders } from "../../redux/actions/folder.action";
+import { AppDispatch } from "../../redux/reducers/store";
+import { FolderType } from "../../utils/types";
+import FlexContainer from "../containers/flex.container";
+import FolderItem from "../lists/folder.item";
+import Spinner from "../loaders/spinner.loader";
 
 const RecentFolders: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [list, setList] = useState<FolderType[]>([]);
 
-  const folderState = useSelector((state: any) => state.Folder);
+  const folderState = useSelector((state: any) => state.RecentFolder);
 
-  const { list: folders, isLoading: loading } = folderState;
+  const { list: folders, loading } = folderState;
 
   useEffect(() => {
-    dispatch(getFolders());
+    dispatch(getRecentFolders());
   }, [dispatch]);
 
   useEffect(() => {
-    if (folders?.length > 0) {
-      const tempFolders = folders;
-      // Reverse code here
-      setList(tempFolders.slice(0, 10));
-    } else {
-      setList([]);
-    }
+    setList(folders ?? []);
   }, [folders]);
 
   return (
@@ -34,7 +29,7 @@ const RecentFolders: React.FC = () => {
         Recent Folders
       </div>
       {loading ? (
-        <div>Loading...</div>
+        <Spinner className="my-10" />
       ) : list.length === 0 ? (
         <div>No folders found. Please create a folder.</div>
       ) : (
