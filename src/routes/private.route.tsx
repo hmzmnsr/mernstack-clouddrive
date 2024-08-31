@@ -3,9 +3,9 @@ import FlexContainer from "../components/containers/flex.container";
 import SideBar from "../components/sidebar/sidebar";
 import TopNavigation from "../components/top-nav/top.navigation";
 import DashboardPage from "../pages/dashboard/dashboard.page";
-import FavFiles from "../pages/favorites/fav.files";
-import FilesPage from "../pages/files/all.files";
-import AllFolders from "../pages/folders/all.folders";
+import FavoriteFilesPage from "../pages/fav-files/favorites.page";
+import FilesPage from "../pages/files/files.page";
+import FoldersPage from "../pages/folders/folders.page";
 
 const PrivateRoutes = () => {
   return (
@@ -18,8 +18,10 @@ const PrivateRoutes = () => {
         <Routes>
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/files" element={<FilesPage />} />
-          <Route path="/folders" element={<AllFolders />} />
-          <Route path="/favorites" element={<FavFiles />} />
+          <Route path="/folders/:id" element={<FilesPage />} />
+          <Route path="/folders" element={<FoldersPage />} />
+          <Route path="/favorites" element={<FavoriteFilesPage />} />
+          <Route path="/settings" element={<></>} />
           <Route path="*" element={<Navigate to="/dashboard" />} />
         </Routes>
       </FlexContainer>

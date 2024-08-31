@@ -47,12 +47,12 @@ export const deleteFile = async (fileId: string) => {
   }
 };
 
-// Fetch all files
 export const getFiles = createAsyncThunk(
   "files/getFiles",
-  async (_, { rejectWithValue }) => {
+  async (folderRef: string | undefined, { rejectWithValue }) => {
     try {
-      const { data } = await api.get("/files");
+      const url = `/files?folderRef=${folderRef ?? ""}`;
+      const { data } = await api.get(url);
       return data;
     } catch (error) {
       console.error("Error fetching files:", error);

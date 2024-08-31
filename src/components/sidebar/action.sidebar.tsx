@@ -18,7 +18,9 @@ const SidebarAction: React.FC<SidebarActionProps> = ({
     <button
       type="button"
       onClick={onClick}
-      className={`w-full flex flex-row   text-white text-lg font-light items-center py-4 px-8  hover:bg-gray-200 hover:bg-opacity-50 rounded ${className}`}
+      className={`w-full flex flex-row ${
+        isActive ? "bg-gray-200 bg-opacity-50" : ""
+      } text-white text-lg font-light items-center py-4 px-8  hover:bg-gray-200 hover:bg-opacity-50 rounded ${className}`}
     >
       <FontAwesomeIcon icon={icon} className="pr-2" />
       <p>{text}</p>

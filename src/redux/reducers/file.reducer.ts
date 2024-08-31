@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { FolderType } from "../../utils/types";
-import { getFiles, getFavoriteFiles } from "../actions/file.action";
+import { getFavoriteFiles, getFiles } from "../actions/file.action";
 
 export interface FileState {
   list: FolderType[];

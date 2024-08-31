@@ -1,16 +1,18 @@
 import { FaFolder } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import { PageUrls } from "../../utils/enums";
 import { FolderType } from "../../utils/types";
 
 const FolderItem = ({ folder }: { folder: FolderType }) => {
-  const handleRightClick = (event: React.MouseEvent, folderId: string) => {
-    event.preventDefault();
-  };
+  const navigate = useNavigate();
 
   return (
     <div
       key={folder._id}
       className="flex-none w-48 flex flex-col items-center justify-center cursor-pointer p-2"
-      onContextMenu={(e) => handleRightClick(e, folder._id)}
+      onClick={() => {
+        navigate(`${PageUrls.FOLDERS}/${folder._id}`);
+      }}
     >
       <div className="bg-white h-full w-full py-10 mb-2 flex justify-center items-center flex-col shadow rounded-md">
         <div className="text-customBlueTwo rounded-m">
