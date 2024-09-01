@@ -7,6 +7,7 @@ import { getFolders } from "../../redux/actions/folder.action";
 import { AppDispatch } from "../../redux/reducers/store";
 import { FolderType } from "../../utils/types";
 
+
 const FoldersPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
 
@@ -34,6 +35,7 @@ const FoldersPage: React.FC = () => {
           ))}
         </FlexContainer>
       )}
+      
     </FlexContainer>
   );
 };

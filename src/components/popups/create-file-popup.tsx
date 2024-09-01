@@ -7,19 +7,21 @@ import { FolderType } from "../../utils/types";
 interface CreateFilePopupProps {
   onClose: () => void;
   onCreate: (fileName: string, file: File | null, folderId: string) => void;
+  defaultFolder: string;
 }
 
 const CreateFilePopup: React.FC<CreateFilePopupProps> = ({
   onClose,
   onCreate,
+  defaultFolder,
 }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { allFolders: folders, isLoading: loading } = useSelector(
+  const { allFolders: folders} = useSelector(
     (state: any) => state.Folder
   );
   const [fileName, setFileName] = useState<string>("");
   const [file, setFile] = useState<File | null>(null);
-  const [selectedFolder, setSelectedFolder] = useState<string>("");
+  const [selectedFolder, setSelectedFolder] = useState<string>(defaultFolder);
 
   useEffect(() => {
     dispatch(getAllFolders());
@@ -56,7 +58,7 @@ const CreateFilePopup: React.FC<CreateFilePopupProps> = ({
             value={selectedFolder}
             onChange={(e) => setSelectedFolder(e.target.value)}
             className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md"
-            disabled={loading}
+            disabled={!!defaultFolder}  // Disable if a folder is already selected
           >
             <option value="" disabled>
               Select a folder

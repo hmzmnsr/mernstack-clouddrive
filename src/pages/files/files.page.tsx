@@ -1,8 +1,8 @@
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import SidebarButton from "../../components/buttons/sidebar.button";
 import FileItem from "../../components/lists/file.item";
 import Spinner from "../../components/loaders/spinner.loader";
@@ -19,6 +19,7 @@ import { FileData } from "../../utils/types";
 
 const FilesPage = () => {
   const { id: folderRef } = useParams();
+  const navigate = useNavigate();
 
   const dispatch = useDispatch<AppDispatch>();
   const [showPopup, setShowPopup] = useState<boolean>(false);
@@ -81,19 +82,34 @@ const FilesPage = () => {
     }
   };
 
+  const handleBackClick = () => {
+    navigate(-1); // Go back to the previous page
+  };
+
   return (
     <div className="px-7 w-full z-10">
       <div className="grid grid-cols-12 pt-4">
-        <div className="text-lg font-bold tracking-wide font-sans leading-loose col-span-10">
+        <div className="text-lg font-bold tracking-wide font-sans leading-loose col-span-9">
           {folder}
         </div>
-        <SidebarButton
-          className="px-7 py-3 font-light text-base col-span-2"
-          onClick={() => setShowPopup(true)}
-        >
-          <FontAwesomeIcon icon={faPlus} className="pr-2" />
-          Create File
-        </SidebarButton>
+        <div className="col-span-3 flex justify-end pr-6">
+          {folderRef && (
+            <SidebarButton
+              className="px-7 py-3 font-light text-base mr-2"
+              onClick={handleBackClick}
+            >
+              <FontAwesomeIcon icon={faArrowLeft} className="pr-2" />
+              Back
+            </SidebarButton>
+          )}
+          <SidebarButton
+            className="px-7 py-3 font-light text-base"
+            onClick={() => setShowPopup(true)}
+          >
+            <FontAwesomeIcon icon={faPlus} className="pr-2" />
+            Create File
+          </SidebarButton>
+        </div>
       </div>
       {loading ? (
         <Spinner />
@@ -111,6 +127,7 @@ const FilesPage = () => {
         <CreateFilePopup
           onClose={() => setShowPopup(false)}
           onCreate={handleCreateFile}
+          defaultFolder={folderRef || ""}
         />
       )}
     </div>

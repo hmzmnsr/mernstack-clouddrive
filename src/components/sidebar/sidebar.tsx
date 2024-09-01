@@ -87,7 +87,7 @@ const SideBar = () => {
         <FlexContainer className="w-full flex-row items-center my-8">
           <SidebarButton
             onClick={() => setShowPopup(true)}
-            className="w-3/5 py-3"
+            className="w-3/5 py-3 mx-auto"
           >
             <FontAwesomeIcon icon={faPlus} className="pr-2" />
             Create Folder
@@ -99,7 +99,7 @@ const SideBar = () => {
 
         <StorageShow />
 
-        <SidebarButton className="w-3/5 py-3" onClick={handleLogout}>
+        <SidebarButton className="w-3/5 py-3 mx-auto" onClick={handleLogout}>
           Logout
         </SidebarButton>
       </FlexContainer>

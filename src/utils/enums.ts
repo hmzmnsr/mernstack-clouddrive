@@ -13,3 +13,4 @@ export enum PageUrls {
   FAVORITES = "/favorites",
   SETTINGS = "/settings",
 }
+ 

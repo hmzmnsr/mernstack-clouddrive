@@ -2,7 +2,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import FlexContainer from "../components/containers/flex.container";
 import SideBar from "../components/sidebar/sidebar";
 import TopNavigation from "../components/top-nav/top.navigation";
-import DashboardPage from "../pages/dashboard/dashboard.page";
+import DashboardPage from "../pages/home/home.page";
 import FavoriteFilesPage from "../pages/fav-files/favorites.page";
 import FilesPage from "../pages/files/files.page";
 import FoldersPage from "../pages/folders/folders.page";
