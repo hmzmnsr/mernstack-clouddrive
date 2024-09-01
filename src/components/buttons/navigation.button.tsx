@@ -1,9 +1,19 @@
 import React, { useState } from 'react';
-import { BellIcon} from '@heroicons/react/24/solid';
+import { BellIcon } from '@heroicons/react/24/solid';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from "../../redux/reducers/store";
+import { logOut } from '../../redux/reducers/profile.reducer';
+import { useNavigate } from 'react-router-dom';
 
 const NavigationButtons: React.FC = () => {
     const [showProfile, setShowProfile] = useState(false);
     const [showNotifications, setShowNotifications] = useState(false);
+    
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const profile = useSelector((state: RootState) => state.Profile.profile);
+    const isAuthenticated = useSelector((state: RootState) => state.Profile.isAuthenticated);
 
     const toggleProfile = () => {
         setShowProfile(!showProfile);
@@ -15,18 +25,23 @@ const NavigationButtons: React.FC = () => {
         setShowProfile(false); // Close profile dropdown
     };
 
+    const handleLogout = () => {
+        dispatch(logOut());
+        navigate('/login'); // Redirect to login page after logout
+    };
+
     return (
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center absolute z-20">
             {/* Notification Bell Button */}
-            <div className="relative px-6 pt-4  ">
+            <div className="relative px-6 pt-4">
                 <button onClick={toggleNotifications} className="relative">
                     <BellIcon className="h-8 w-8 text-customBlueTwo" />
                 </button>
 
                 {/* Notifications Dropdown */}
                 {showNotifications && (
-                    <div className="absolute right-0 mt-2 w-64 bg-white rounded-md shadow-lg py-2 z-10">
-                        <div className="px-4 py-2 text-gray-700">You have no new notifications.</div>
+                    <div className="absolute left-1/2 transform -translate-x-1/2 mt-2 w-64 bg-white rounded-md shadow-lg py-4 z-10">
+                        <div className="px-4 py-2 text-base text-gray-700">You have no new notifications.</div>
                         {/* Add more notifications here */}
                         <div className="px-4 py-2 hover:bg-gray-100">Notification 1</div>
                         <div className="px-4 py-2 hover:bg-gray-100">Notification 2</div>
@@ -47,16 +62,25 @@ const NavigationButtons: React.FC = () => {
 
                 {/* Profile Dropdown */}
                 {showProfile && (
-                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 z-10">
-                        <div className="px-4 py-2">
-                            <p className="text-sm text-gray-900">John Doe</p> {/* Replace with actual name */}
-                            <p className="text-sm text-gray-500">johndoe@example.com</p> {/* Replace with actual email */}
-                        </div>
-                        <hr className="my-2" />
-                        <a href="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                            View Profile
-                        </a>
-
+                    <div className="absolute left-1/2 trasnform -translate-x-1/2 mt-2 w-48 bg-white rounded-md shadow-lg py-4 z-10">
+                        {isAuthenticated && profile && (
+                            <>
+                                <div className="px-4 py-2 bg-blue-100">
+                                    <p className="text-base font-semibold text-gray-900">{profile.name}</p> {/* Display user name */}
+                                    <p className="text-base font-semibold text-gray-500">{profile.email}</p> {/* Display user email */}
+                                </div>
+                                <hr className="my-2" />
+                                <a href="/profile" className="block px-4 py-2 text-base text-gray-700 hover:bg-gray-100">
+                                    View Profile
+                                </a>
+                                <button
+                                    onClick={handleLogout}
+                                    className="block w-full text-left px-4 py-2 text-base text-red-600 hover:bg-gray-100"
+                                >
+                                    Logout
+                                </button>
+                            </>
+                        )}
                     </div>
                 )}
             </div>

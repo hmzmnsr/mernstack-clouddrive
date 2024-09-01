@@ -12,7 +12,7 @@ const initialState: ProfileState = {
   profile: null,
   isAuthenticated: false,
   loading: false,
-};
+}; 
 
 export const profileSlice = createSlice({
   name: "PROFILE",

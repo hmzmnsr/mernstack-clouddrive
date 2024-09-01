@@ -15,7 +15,7 @@ const TopNavigation: React.FC = () => {
       </div>
       <div className="col-span-2">
         <NavigationButtons />
-      </div>
+      </div> 
     </div>
   );
 };

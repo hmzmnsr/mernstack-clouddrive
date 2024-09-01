@@ -27,7 +27,7 @@ export const loginUser = async (credentials: {
   try {
     const { data }: { data: { token: string } } = await api.post(
       "/users/login",
-      credentials
+      credentials 
     );
 
     if (data.token) {
