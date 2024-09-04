@@ -56,3 +56,19 @@ export const createUser = async (userData: {
     return null;
   }
 };
+
+export const updatePassword = createAsyncThunk<
+  void,
+  { oldPassword: string; newPassword: string },
+  { rejectValue: string }
+>(
+  "profile/updatePassword",
+  async ({ oldPassword, newPassword }, { rejectWithValue }) => {
+    try {
+      await api.patch("/users/password", { oldPassword, newPassword });
+    } catch (error: any) {
+      console.error("Error updating password:", error);
+      return rejectWithValue("Failed to update password");
+    }
+  }
+);
