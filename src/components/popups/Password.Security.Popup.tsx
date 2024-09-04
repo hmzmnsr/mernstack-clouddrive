@@ -26,7 +26,7 @@ const PasswordSecurityPopup: React.FC<PasswordSecurityPopupProps> = ({ profile, 
         if (newPassword !== confirmNewPassword) {
             setMessage("New password and confirm password do not match");
             setMessageType("error");
-            return; // Don't clear the error message automatically
+            return;
         }
 
         // Dispatch the action to update the password
@@ -37,13 +37,13 @@ const PasswordSecurityPopup: React.FC<PasswordSecurityPopupProps> = ({ profile, 
                 setMessageType("success");
                 setTimeout(() => {
                     setMessage(null);
-                    onClose(); // Close the popup after 3 seconds on success
+                    onClose(); 
                 }, 3000);
             })
             .catch((error) => {
                 setMessage(error || "Incorrect old password");
                 setMessageType("error");
-                // Do not clear the error message automatically
+               
             });
     };
 
