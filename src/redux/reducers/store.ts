@@ -13,7 +13,7 @@ export const store = configureStore({
     File: fileSlice.reducer,
     System: systemSlice.reducer,
     RecentFolder: recentFolderSlice.reducer,
-    RecentFile: recentFileSlice.reducer,
+    RecentFile: recentFileSlice.reducer, 
   },
 });
 

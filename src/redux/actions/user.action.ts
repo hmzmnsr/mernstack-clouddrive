@@ -18,7 +18,7 @@ export const getProfile = createAsyncThunk<ProfileType, void>(
       return rejectWithValue("Failed to fetch folders");
     }
   }
-);
+); 
 
 export const loginUser = async (credentials: {
   email: string;
@@ -48,7 +48,7 @@ export const createUser = async (userData: {
   phone: string;
 }) => {
   try {
-    const { data } = await api.post("/users", userData);
+    const { data } = await api.post("/users", userData); 
 
     return data;
   } catch (error) {
